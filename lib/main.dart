@@ -3,6 +3,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_theme.dart';
+import 'package:resto_chain_app/features/auth/login/views/login_screen.dart';
+import 'package:resto_chain_app/features/auth/sign_up/views/sign_up_screen.dart';
 import 'package:resto_chain_app/features/splash/splash_screen.dart';
 
 void main() {
@@ -29,7 +31,12 @@ class MyApp extends StatelessWidget {
           child: child!,
         );
       },
-      home: const SplashScreen(),
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => SplashScreen()),
+        GetPage(name: '/login', page: () => LoginScreen()),
+        GetPage(name: '/signup', page: () => SignUpScreen()),
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_theme.dart';
 import 'package:resto_chain_app/features/splash/splash_screen.dart';
 
@@ -18,13 +19,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: Get.deviceLocale,
       builder: (context, child) {
+        AppSpacing.init(context);
         final locale = Localizations.localeOf(context);
 
         return Theme(
-          data:
-              locale.languageCode == 'ar'
-                  ? AppTheme.arabicLightTheme
-                  : AppTheme.englishLightTheme,
+          data: locale.languageCode == 'ar'
+              ? AppTheme.arabicLightTheme
+              : AppTheme.englishLightTheme,
           child: child!,
         );
       },

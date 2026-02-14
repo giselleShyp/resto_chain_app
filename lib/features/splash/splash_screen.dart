@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:resto_chain_app/core/constants/app_assets.dart';
+import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
@@ -16,9 +19,25 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppColors.primary,
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: AppSpacing.lg,
           children: [
+            SvgPicture.asset(
+              AppAssets.logo,
+              width: 100,
+              height: 100,
+            ),
             AppText(
-              'Resto Chain',
+              'RestoChain',
+              contentColor: AppColors.surface,
+              contentStyle: ContentStyle.headlineLarge,
+              fontWeight: FontWeight.bold,
+            ),
+            AppText(
+              'Your favorite restaurants, one tap away',
+              contentColor: AppColors.surface,
+              contentStyle: ContentStyle.labelLarge,
+              fontWeight: FontWeight.w500,
             ),
           ],
         ),

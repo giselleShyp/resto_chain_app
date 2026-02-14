@@ -8,8 +8,8 @@ import 'package:resto_chain_app/core/widgets/label_text.dart/app_label_text.dart
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

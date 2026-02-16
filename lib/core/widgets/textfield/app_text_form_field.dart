@@ -7,6 +7,8 @@ class AppTextFormField extends StatelessWidget {
   final String hintText;
   final IconData? prefixIcon;
   final bool isObscure;
+  final TextInputType? keyboardType;
+
   final String? Function(String?)? validator;
 
   const AppTextFormField({
@@ -15,6 +17,7 @@ class AppTextFormField extends StatelessWidget {
     required this.hintText,
     this.prefixIcon,
     this.isObscure = false,
+    this.keyboardType,
     this.validator,
   });
 
@@ -23,7 +26,8 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: isObscure,
-      validator: validator, // Validation support
+      validator: validator,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,

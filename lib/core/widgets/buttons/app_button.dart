@@ -56,7 +56,7 @@ class AppButton extends StatelessWidget {
           side: MaterialStateProperty.all(
             BorderSide(
               color: borderColor,
-              width: 2,
+              width: 1,
             ),
           ),
         ),
@@ -65,6 +65,7 @@ class AppButton extends StatelessWidget {
           child: AppText(
             label,
             contentStyle: ContentStyle.labelLarge,
+            fontWeight: FontWeight.w600,
             contentColor: contentColor,
           ),
         ),

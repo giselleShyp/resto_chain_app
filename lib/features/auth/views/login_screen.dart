@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result.isSuccess) {
       AppSnackbar.success(result.message);
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.base);
     } else {
       AppSnackbar.error(result.message);
     }

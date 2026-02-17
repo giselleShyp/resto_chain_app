@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
-        Get.offAllNamed(AppRoutes.profile);
+        Get.offAllNamed(AppRoutes.base);
       } else {
         Get.offAllNamed(AppRoutes.login);
       }

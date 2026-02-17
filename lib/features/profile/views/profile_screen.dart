@@ -16,7 +16,6 @@ class ProfileScreen extends GetView<UserController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromRGBO(251, 250, 249, 1),
         body: Obx(
           () {
             final user = controller.currentUser.value;

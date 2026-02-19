@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
+import 'package:resto_chain_app/core/styles/radius/app_radius.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 
 class AppTextFormField extends StatelessWidget {
@@ -39,15 +39,15 @@ class AppTextFormField extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide:
               BorderSide(color: AppColors.textSecondary.withValues(alpha: 0.4)),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.md),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: BorderSide(color: AppColors.error),
         ),
       ),

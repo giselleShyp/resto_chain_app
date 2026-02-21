@@ -30,7 +30,13 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+        prefixIcon: prefixIcon != null
+            ? Icon(
+                prefixIcon,
+                color: AppColors.textSecondary,
+                size: 20,
+              )
+            : null,
         filled: true,
         fillColor: Colors.grey.withValues(alpha: 0.1),
         hintStyle: TextStyle(

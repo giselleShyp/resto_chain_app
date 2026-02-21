@@ -1,29 +1,29 @@
-class AppResult<T> {
+class ResultModel<T> {
   final bool isSuccess;
   final String message;
   final T? data;
 
-  AppResult({
+  ResultModel({
     required this.isSuccess,
     required this.message,
     this.data,
   });
 
-  factory AppResult.success({
+  factory ResultModel.success({
     required String message,
     T? data,
   }) {
-    return AppResult(
+    return ResultModel(
       isSuccess: true,
       message: message,
       data: data,
     );
   }
 
-  factory AppResult.failure({
+  factory ResultModel.failure({
     required String message,
   }) {
-    return AppResult(
+    return ResultModel(
       isSuccess: false,
       message: message,
     );

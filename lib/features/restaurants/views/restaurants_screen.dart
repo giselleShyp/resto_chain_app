@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/constants/app_assets.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
+import 'package:resto_chain_app/core/layouts/main/main_layout.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
-import 'package:resto_chain_app/core/widgets/divider/app_divider.dart';
 import 'package:resto_chain_app/core/widgets/restaurant_card/restaurant_card.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
@@ -21,60 +21,59 @@ class RestaurantsScreen extends StatelessWidget {
   final controller = Get.put(RestaurantController());
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            _buildHeader(),
-            AppDivider(),
-            _buildBody(controller: controller),
-          ],
-        ),
-      ),
+    return MainLayout(
+      header: _buildHeader(),
+      body: _buildBody(controller: controller),
     );
+
+    // SafeArea(
+    //   child: Scaffold(
+    //     body: Column(
+    //       children: [
+    //         _buildHeader(),
+    //         AppDivider(),
+    //         _buildBody(controller: controller),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 
 Widget _buildHeader() {
-  return Padding(
-    padding: EdgeInsets.symmetric(
-      horizontal: AppSpacing.md,
-      vertical: AppSpacing.md,
-    ),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  'Deliver to',
-                  contentStyle: ContentStyle.bodyMedium,
-                  contentColor: AppColors.textSecondary,
-                ),
-                AppText(
-                  '123 Main Street',
-                  contentStyle: ContentStyle.bodyLarge,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-            ),
-            CircleAvatar(
-              child: SvgPicture.asset(
-                AppAssets.logo,
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                'Deliver to',
+                contentStyle: ContentStyle.bodyMedium,
+                contentColor: AppColors.textSecondary,
               ),
+              AppText(
+                '123 Main Street',
+                contentStyle: ContentStyle.bodyLarge,
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
+          CircleAvatar(
+            child: SvgPicture.asset(
+              AppAssets.logo,
             ),
-          ],
-        ),
-        Gaps.h16,
-        AppTextFormField(
-          hintText: 'Search restaurants...',
-          prefixIcon: CupertinoIcons.search,
-        ),
-      ],
-    ),
+          ),
+        ],
+      ),
+      Gaps.h16,
+      AppTextFormField(
+        hintText: 'Search restaurants...',
+        prefixIcon: CupertinoIcons.search,
+      ),
+    ],
   );
 }
 

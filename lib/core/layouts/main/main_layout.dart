@@ -18,6 +18,7 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color.fromRGBO(251, 250, 249, 1),
         body: Column(
           children: [
             Container(

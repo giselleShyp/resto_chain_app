@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:resto_chain_app/core/constants/app_assets.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/core/layouts/main/main_layout.dart';
+import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/restaurant_card/restaurant_card.dart';
@@ -118,6 +119,9 @@ Widget _buildBody({
                     restaurantName: restaurant.name,
                     restaurantDescription: restaurant.description,
                     index: index,
+                    onTap: () {
+                      Get.toNamed(AppRoutes.branches);
+                    },
                   );
                 },
               ),

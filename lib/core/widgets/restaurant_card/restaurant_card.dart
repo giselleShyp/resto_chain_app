@@ -13,12 +13,14 @@ class RestaurantCard extends StatelessWidget {
     required this.restaurantName,
     required this.restaurantDescription,
     required this.index,
+    required this.onTap,
   });
 
   final String logoUrl;
   final String restaurantName;
   final String restaurantDescription;
   final int index;
+  final VoidCallback onTap;
 
   final List<Color> logoColors = [
     Colors.orange.withValues(alpha: 0.15),
@@ -32,34 +34,37 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final randomColor = logoColors[index % logoColors.length];
 
-    return BaseCard(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: AppSpacing.xs,
-            children: [
-              RestaurantLogoContainer(
-                imageUrl: logoUrl,
-                backgroundColor: randomColor,
-              ),
-              Gaps.h2,
-              AppText(
-                restaurantName,
-                contentStyle: ContentStyle.titleMedium,
-                fontWeight: FontWeight.w500,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-              AppText(
-                restaurantDescription,
-                contentStyle: ContentStyle.labelMedium,
-                contentColor: AppColors.textSecondary,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: BaseCard(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: AppSpacing.xs,
+              children: [
+                RestaurantLogoContainer(
+                  imageUrl: logoUrl,
+                  backgroundColor: randomColor,
+                ),
+                Gaps.h2,
+                AppText(
+                  restaurantName,
+                  contentStyle: ContentStyle.titleMedium,
+                  fontWeight: FontWeight.w500,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                AppText(
+                  restaurantDescription,
+                  contentStyle: ContentStyle.labelMedium,
+                  contentColor: AppColors.textSecondary,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ),
       ),

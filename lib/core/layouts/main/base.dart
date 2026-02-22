@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
 import 'package:resto_chain_app/core/layouts/main/shared/bottom_nav_item.dart';
@@ -25,33 +26,42 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        return Scaffold(
-          backgroundColor: const Color.fromRGBO(251, 250, 249, 1),
-          body: IndexedStack(
-            index: navController.currentIndex.value,
-            children: pages,
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.white,
           ),
-          bottomNavigationBar: MainBottomNavigationBar(
-            currentIndex: navController.currentIndex.value,
-            onTap: navController.changeIndex,
-            items: [
-              BottomNavItem(
-                icon: Icons.home_outlined,
-                label: "Home",
-              ),
-              BottomNavItem(
-                icon: CupertinoIcons.square_favorites,
-                label: "Orders",
-              ),
-              BottomNavItem(
-                icon: CupertinoIcons.cart,
-                label: "Cart",
-              ),
-              BottomNavItem(
-                icon: CupertinoIcons.person,
-                label: "Profile",
-              ),
-            ],
+          child: Scaffold(
+            backgroundColor:
+                Colors.white, //const Color.fromRGBO(251, 250, 249, 1)
+            body: IndexedStack(
+              index: navController.currentIndex.value,
+              children: pages,
+            ),
+            bottomNavigationBar: MainBottomNavigationBar(
+              currentIndex: navController.currentIndex.value,
+              onTap: navController.changeIndex,
+              items: [
+                BottomNavItem(
+                  icon: Icons.home_outlined,
+                  label: "Home",
+                ),
+                BottomNavItem(
+                  icon: CupertinoIcons.square_favorites,
+                  label: "Orders",
+                ),
+                BottomNavItem(
+                  icon: CupertinoIcons.cart,
+                  label: "Cart",
+                ),
+                BottomNavItem(
+                  icon: CupertinoIcons.person,
+                  label: "Profile",
+                ),
+              ],
+            ),
           ),
         );
       },

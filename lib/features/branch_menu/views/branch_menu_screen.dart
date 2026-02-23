@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/branches/views/widgets/branch_card.dart';
+import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_card.dart';
 
-class BranchesScreen extends StatelessWidget {
-  const BranchesScreen({super.key});
+class BranchMenuScreen extends StatelessWidget {
+  const BranchMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +27,13 @@ class BranchesScreen extends StatelessWidget {
         padding: EdgeInsets.all(AppSpacing.md),
         child: Column(
           children: [
-            BranchCard(
-              name: "Burger Joint - Downtown",
-              address: "123 main st,Downtown",
-              distance: "0.6km",
-              workingHours: "10 Am - 10 PM",
-              status: BranchStatus.open,
-              onTap: () {
-                Get.toNamed(AppRoutes.branchMenu);
-              },
+            MenuItemCard(
+              name: "name name ",
+              description: "description ",
+              imageUrl:
+                  "https://stories.freepiklabs.com/storage/52060/hamburger-amico-4792.png",
+              price: 13.0,
+              onAdd: () {},
             ),
           ],
         ),

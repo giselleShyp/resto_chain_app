@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:resto_chain_app/core/styles/radius/app_radius.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
+import 'package:resto_chain_app/core/widgets/app_cached_network_image/app_cached_network_image.dart';
 import 'package:resto_chain_app/core/widgets/base_card.dart/base_card.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
@@ -92,15 +92,7 @@ class RestaurantLogoContainer extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
-      child: CachedNetworkImage(
-        imageUrl: imageUrl,
-        fit: BoxFit.contain,
-        width: 50,
-        height: 50,
-        placeholder: (context, url) =>
-            Center(child: const CircularProgressIndicator()),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
+      child: AppCachedNetworkImage(imageUrl: imageUrl),
     );
   }
 }

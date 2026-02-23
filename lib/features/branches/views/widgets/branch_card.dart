@@ -14,6 +14,7 @@ class BranchCard extends StatelessWidget {
   final String distance;
   final String workingHours;
   final BranchStatus status;
+  final VoidCallback onTap;
 
   const BranchCard({
     super.key,
@@ -22,28 +23,32 @@ class BranchCard extends StatelessWidget {
     required this.distance,
     required this.workingHours,
     required this.status,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BaseCard(
-      child: Padding(
-        padding: AppSpacing.md.all,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _LocationIcon(),
-            Gaps.w16,
-            Expanded(
-              child: _BranchInfo(
-                name: name,
-                address: address,
-                distance: distance,
-                workingHours: workingHours,
+    return GestureDetector(
+      onTap: onTap,
+      child: BaseCard(
+        child: Padding(
+          padding: AppSpacing.md.all,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _LocationIcon(),
+              Gaps.w16,
+              Expanded(
+                child: _BranchInfo(
+                  name: name,
+                  address: address,
+                  distance: distance,
+                  workingHours: workingHours,
+                ),
               ),
-            ),
-            _BranchTrailing(status: status),
-          ],
+              _BranchTrailing(status: status),
+            ],
+          ),
         ),
       ),
     );

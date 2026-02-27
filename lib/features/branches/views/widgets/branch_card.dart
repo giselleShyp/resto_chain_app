@@ -13,7 +13,7 @@ class BranchCard extends StatelessWidget {
   final String address;
   final String distance;
   final String workingHours;
-  final BranchStatus status;
+  final bool isOpen;
   final VoidCallback onTap;
 
   const BranchCard({
@@ -22,14 +22,20 @@ class BranchCard extends StatelessWidget {
     required this.address,
     required this.distance,
     required this.workingHours,
-    required this.status,
+    required this.isOpen,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (!isOpen) {
+          //Closed Res
+          return;
+        }
+        onTap();
+      },
       child: BaseCard(
         child: Padding(
           padding: AppSpacing.md.all,
@@ -46,7 +52,7 @@ class BranchCard extends StatelessWidget {
                   workingHours: workingHours,
                 ),
               ),
-              _BranchTrailing(status: status),
+              _BranchTrailing(isOpen: isOpen),
             ],
           ),
         ),
@@ -103,12 +109,14 @@ class _BranchInfo extends StatelessWidget {
           contentStyle: ContentStyle.labelLarge,
           contentColor: AppColors.textSecondary,
         ),
+        // Gaps.h8,
+        // _InfoItem(
+        //   icon: CupertinoIcons.placemark,
+        //   text: distance,
+        // ),
+        //Gaps.h2,
+
         Gaps.h8,
-        _InfoItem(
-          icon: CupertinoIcons.placemark,
-          text: distance,
-        ),
-        Gaps.h2,
         _InfoItem(
           icon: CupertinoIcons.time,
           text: workingHours,
@@ -150,14 +158,14 @@ class _InfoItem extends StatelessWidget {
 }
 
 class _BranchTrailing extends StatelessWidget {
-  final BranchStatus status;
+  final bool isOpen;
 
-  const _BranchTrailing({required this.status});
+  const _BranchTrailing({required this.isOpen});
 
   @override
   Widget build(BuildContext context) {
-    final isOpen = status == BranchStatus.open;
     final color = isOpen ? AppColors.success : AppColors.error;
+
     final title = isOpen ? "Open" : "Closed";
 
     return Row(
@@ -179,10 +187,13 @@ class _BranchTrailing extends StatelessWidget {
           ),
         ),
         Gaps.w8,
-        const Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: 20,
-          color: Colors.grey,
+        Visibility(
+          visible: isOpen,
+          child: const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 20,
+            color: Colors.grey,
+          ),
         ),
       ],
     );

@@ -1,16 +1,28 @@
-# resto_chain_app
+RestoChain
 
-A new Flutter project.
+Multi-Restaurant Ordering & Management System
+Built with Flutter, GetX & Firebase
 
-## Getting Started
+Features (Planned)
 
-This project is a starting point for a Flutter application.
+Firebase Authentication
 
-A few resources to get you started if this is your first Flutter project:
+Multi-Restaurant Architecture
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Branch-based ordering system
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Cart & Checkout flow
+
+Order status tracking
+
+Clean Architecture with GetX
+
+Tech Stack
+
+Flutter
+
+GetX
+
+Firebase Auth
+
+Cloud Firestore

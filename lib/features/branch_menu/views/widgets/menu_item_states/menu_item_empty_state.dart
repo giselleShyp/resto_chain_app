@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
@@ -19,7 +19,7 @@ class MenuItemEmptyState extends StatelessWidget {
         child: Column(
           children: [
             Icon(
-              CupertinoIcons.placemark,
+              Icons.my_library_books_outlined,
               color: AppColors.textSecondary,
               size: 40,
             ),

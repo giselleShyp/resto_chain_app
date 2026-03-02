@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_category.dart';

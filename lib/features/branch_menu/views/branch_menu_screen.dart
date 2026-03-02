@@ -1,12 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
+import 'package:resto_chain_app/core/controllers/cart_controller.dart';
+import 'package:resto_chain_app/core/enums/view_state.dart';
+import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/radius/app_radius.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
+import 'package:resto_chain_app/features/branch_menu/controllers/branch_menu_controller.dart';
+import 'package:resto_chain_app/features/branch_menu/models/menu_category.dart';
 import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_card.dart';
+import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_empty_state.dart';
+import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_error_state.dart';
+import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_loading_state.dart';
 
-class BranchMenuScreen extends StatelessWidget {
+class BranchMenuScreen extends GetView<BranchMenuController> {
   const BranchMenuScreen({super.key});
 
   @override
@@ -16,52 +26,103 @@ class BranchMenuScreen extends StatelessWidget {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            _buildAppBar(),
-            _buildCategoriesHeader(),
+            _buildAppBar(controller: controller),
+            Obx(() {
+              if (controller.categoriesState.value == ViewState.success &&
+                  controller.categories.isNotEmpty) {
+                return _buildCategoriesHeader(controller);
+              }
+
+              return const SliverToBoxAdapter(
+                child: SizedBox.shrink(),
+              );
+            }),
           ];
         },
-        body: Padding(
-          padding: EdgeInsets.all(AppSpacing.md),
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.md),
-                child: MenuItemCard(
-                  name: "Brownie Sundae",
-                  description:
-                      "Warm brownie, vanilla ice cream with chocolate sauce",
-                  imageUrl:
-                      "https://stories.freepiklabs.com/storage/52060/hamburger-amico-4792.png",
-                  price: 7.99,
-                  onAdd: () {},
-                ),
-              );
-            },
-          ),
+        body: Obx(
+          () {
+            switch (controller.itemsState.value) {
+              case ViewState.loading:
+                return const MenuItemLoadingState();
+
+              case ViewState.error:
+                return MenuItemErrorState(
+                  message: "Something went wrong",
+                  onTap: controller.refreshCurrentCategory,
+                );
+
+              case ViewState.empty:
+                return MenuItemEmptyState(message: "No items found");
+
+              case ViewState.success:
+                return Padding(
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.items.length,
+                    itemBuilder: (context, index) {
+                      final item = controller.items[index];
+
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: AppSpacing.md),
+                        child: MenuItemCard(
+                          name: item.name,
+                          description: item.description,
+                          imageUrl: item.imageUrl,
+                          price: item.price,
+                          onAdd: () {
+                            final cart = Get.find<CartController>();
+
+                            if (!item.isAvailable) {
+                              return;
+                            }
+                            cart.addItem(item);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                );
+            }
+          },
         ),
       ),
     );
   }
 }
 
-SliverAppBar _buildAppBar() {
+SliverAppBar _buildAppBar({required BranchMenuController controller}) {
+  final cart = Get.find<CartController>();
+
   return SliverAppBar(
     backgroundColor: Colors.white,
     elevation: 0,
     pinned: true,
-    title: const Text("Pasta Palace"),
+    title: AppText(
+      controller.branch.branchName,
+      contentStyle: ContentStyle.titleLarge,
+      fontWeight: FontWeight.w500,
+    ),
     actions: [
       Padding(
         padding: EdgeInsets.only(right: AppSpacing.md),
-        child: Badge(
-          label: AppText(
-            "11",
-            contentColor: AppColors.onPrimary,
-            contentStyle: ContentStyle.labelSmall,
+        child: Obx(
+          () => InkWell(
+            onTap: () {
+              final nav = Get.find<BottomNavController>();
+              nav.changeIndex(2);
+
+              Get.offAllNamed(AppRoutes.base);
+            },
+            child: Badge(
+              label: AppText(
+                cart.cartCount.toString(),
+                contentColor: AppColors.onPrimary,
+                contentStyle: ContentStyle.labelSmall,
+              ),
+              child: const Icon(CupertinoIcons.cart),
+            ),
           ),
-          child: const Icon(CupertinoIcons.cart),
         ),
       )
     ],
@@ -75,14 +136,28 @@ SliverAppBar _buildAppBar() {
   );
 }
 
-SliverPersistentHeader _buildCategoriesHeader() {
+SliverPersistentHeader _buildCategoriesHeader(BranchMenuController controller) {
   return SliverPersistentHeader(
     pinned: true,
-    delegate: _CategoryHeaderDelegate(),
+    delegate: _CategoryHeaderDelegate(
+      categories: controller.categories,
+      selectedId: controller.selectedCategoryId.value,
+      onTap: controller.selectCategory,
+    ),
   );
 }
 
 class _CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final List<MenuCategory> categories;
+  final String? selectedId;
+  final Function(String) onTap;
+
+  _CategoryHeaderDelegate({
+    required this.categories,
+    required this.selectedId,
+    required this.onTap,
+  });
+
   @override
   double get minExtent => 60;
 
@@ -98,24 +173,32 @@ class _CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
         horizontal: AppSpacing.sm,
         vertical: AppSpacing.sm,
       ),
-      child: ListView(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        children: [
-          _CategoryChip(title: "Burgers", isSelected: false),
-          Gaps.w8,
-          _CategoryChip(title: "Sides", isSelected: false),
-          Gaps.w8,
-          _CategoryChip(title: "Drinks", isSelected: false),
-          Gaps.w8,
-          _CategoryChip(title: "Desserts", isSelected: true),
-        ],
+        itemCount: categories.length,
+        separatorBuilder: (_, __) => Gaps.w8,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+
+          final isSelected = selectedId == category.id;
+
+          return GestureDetector(
+            onTap: () => onTap(category.id),
+            child: _CategoryChip(
+              title: category.name,
+              isSelected: isSelected,
+            ),
+          );
+        },
       ),
     );
   }
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
+  bool shouldRebuild(covariant _CategoryHeaderDelegate oldDelegate) {
+    return oldDelegate.selectedId != selectedId ||
+        oldDelegate.categories != categories;
+  }
 }
 
 class _CategoryChip extends StatelessWidget {

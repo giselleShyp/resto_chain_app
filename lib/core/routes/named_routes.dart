@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/layouts/main/base.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
+import 'package:resto_chain_app/features/branch_menu/binding/branch_menu_binding.dart';
 import 'package:resto_chain_app/features/branch_menu/views/branch_menu_screen.dart';
 import 'package:resto_chain_app/features/branches/binding/branches_binding.dart';
 import 'package:resto_chain_app/features/branches/views/branches_screen.dart';
@@ -26,6 +27,7 @@ List<GetPage<dynamic>> routePages = [
   ),
   GetPage(
     name: AppRoutes.branchMenu,
+    binding: BranchMenuBinding(),
     page: () => BranchMenuScreen(),
     transition: Transition.fadeIn,
   ),

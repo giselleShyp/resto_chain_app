@@ -120,10 +120,7 @@ Widget _buildBody({
                     restaurantDescription: restaurant.description,
                     index: index,
                     onTap: () {
-                      Get.toNamed(AppRoutes.branches, arguments: {
-                        "restaurantId": restaurant.id,
-                        "restaurantName": restaurant.name,
-                      });
+                      Get.toNamed(AppRoutes.branches, arguments: restaurant);
                     },
                   );
                 },

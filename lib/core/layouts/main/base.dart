@@ -13,7 +13,7 @@ import 'package:resto_chain_app/features/profile/views/profile_screen.dart';
 class BaseScreen extends StatelessWidget {
   BaseScreen({super.key});
 
-  final BottomNavController navController = Get.put(BottomNavController());
+  final BottomNavController navController = Get.find<BottomNavController>();
 
   final List<Widget> pages = [
     RestaurantsScreen(),

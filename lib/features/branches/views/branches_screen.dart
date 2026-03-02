@@ -15,8 +15,6 @@ class BranchesScreen extends GetView<BranchesController> {
 
   @override
   Widget build(BuildContext context) {
-    final restaurantName = Get.arguments['restaurantName'];
-
     return Scaffold(
       appBar: AppBar(
         bottom: PreferredSize(
@@ -27,7 +25,7 @@ class BranchesScreen extends GetView<BranchesController> {
           ),
         ),
         title: AppText(
-          restaurantName,
+          controller.restaurant.name,
           contentStyle: ContentStyle.titleLarge,
           fontWeight: FontWeight.w500,
         ),
@@ -63,7 +61,7 @@ class BranchesScreen extends GetView<BranchesController> {
                         workingHours: branch.workingHours.formattedRange(),
                         isOpen: branch.isOpen,
                         onTap: () {
-                          Get.toNamed(AppRoutes.branchMenu);
+                          Get.toNamed(AppRoutes.branchMenu, arguments: branch);
                         },
                       );
                     },

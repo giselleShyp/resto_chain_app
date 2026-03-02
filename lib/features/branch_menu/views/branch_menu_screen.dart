@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/widgets/dialog/show_switch_cart_dialog.dart';
+import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
@@ -70,12 +72,11 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
                           imageUrl: item.imageUrl,
                           price: item.price,
                           onAdd: () {
-                            final cartController = Get.find<CartController>();
-
-                            if (!item.isAvailable) {
-                              return;
-                            }
-                            cartController.addItem(item);
+                            addItemToCart(
+                              context: context,
+                              item: item,
+                              branchId: controller.branchId,
+                            );
                           },
                         ),
                       );
@@ -87,5 +88,31 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
         ),
       ),
     );
+  }
+}
+
+Future<void> addItemToCart({
+  required BuildContext context,
+  required MenuItemModel item,
+  required String branchId,
+}) async {
+  final cartController = Get.find<CartController>();
+
+  if (!item.isAvailable) {
+    return;
+  }
+
+  final canAdd = cartController.canAddItem(branchId: branchId);
+
+  if (canAdd) {
+    cartController.addItem(item, branchId);
+    return;
+  }
+
+  final confirm = await showSwitchCartDialog(context);
+
+  if (confirm == true) {
+    cartController.clearAll();
+    cartController.addItem(item, branchId);
   }
 }

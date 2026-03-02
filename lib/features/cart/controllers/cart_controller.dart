@@ -9,7 +9,28 @@ class CartController extends GetxController {
 
   double get totalPriceAll => cartItems.fold(0, (sum, e) => sum + e.totalPrice);
 
-  void addItem(MenuItemModel item) {
+  String? currentBranchId;
+
+  bool canAddItem({
+    required String branchId,
+  }) {
+    if (cartItems.isEmpty) return true;
+
+    if (currentBranchId != branchId) {
+      return false;
+    }
+    return true;
+  }
+
+  void addItem(MenuItemModel item, String branchId) {
+    currentBranchId ??= branchId;
+
+    // if (currentBranchId != branchId) {
+    //   return ResultModel.failure(
+    //     message: "Different branch",
+    //   );
+    // }
+
     final index = cartItems.indexWhere((e) => e.item.id == item.id);
 
     if (index != -1) {
@@ -41,5 +62,6 @@ class CartController extends GetxController {
 
   void clearAll() {
     cartItems.clear();
+    currentBranchId = null;
   }
 }

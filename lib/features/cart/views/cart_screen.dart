@@ -81,7 +81,8 @@ Widget _buildCartItems({
             item: cartItem.item,
             totalPrice: cartItem.totalPrice,
             count: cartItem.quantity,
-            onAdd: () => controller.addItem(cartItem.item),
+            onAdd: () => controller.addItem(
+                cartItem.item, controller.currentBranchId ?? ""),
             onRemove: () => controller.removeOne(cartItem.item.id),
             onDelete: () => controller.deleteItem(cartItem.item.id),
           ),

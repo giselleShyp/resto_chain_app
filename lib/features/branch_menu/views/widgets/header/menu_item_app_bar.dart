@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
-import 'package:resto_chain_app/core/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';

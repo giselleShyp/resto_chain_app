@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resto_chain_app/core/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/features/branch_menu/controllers/branch_menu_controller.dart';
@@ -70,12 +70,12 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
                           imageUrl: item.imageUrl,
                           price: item.price,
                           onAdd: () {
-                            final cart = Get.find<CartController>();
+                            final cartController = Get.find<CartController>();
 
                             if (!item.isAvailable) {
                               return;
                             }
-                            cart.addItem(item);
+                            cartController.addItem(item);
                           },
                         ),
                       );

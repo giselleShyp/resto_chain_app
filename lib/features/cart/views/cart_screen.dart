@@ -1,22 +1,133 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:resto_chain_app/core/layouts/main/main_layout.dart';
+import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
+import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
+import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
+import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
+import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/views/cart_item_card.dart';
 import 'package:resto_chain_app/features/cart/views/state_view/cart_screen_empty.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+  CartScreen({super.key});
+
+  final controller = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      header: AppText(
+      header: _buildCartHeader(
+        onPressed: controller.clearAll,
+      ),
+      body: Obx(
+        () {
+          return controller.cartItems.isEmpty
+              ? Expanded(child: CartScreenEmpty())
+              : _buildCartScreenBody(controller);
+        },
+      ),
+    );
+  }
+}
+
+Widget _buildCartHeader({
+  required VoidCallback onPressed,
+}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      AppText(
         'Cart',
         contentStyle: ContentStyle.titleLarge,
         fontWeight: FontWeight.w500,
       ),
-      body: Expanded(
-        child: CartScreenEmpty(),
+      AppTextButton(
+        text: "Clear All",
+        onPressed: onPressed,
       ),
-    );
-  }
+    ],
+  );
+}
+
+Widget _buildCartScreenBody(CartController controller) {
+  return Expanded(
+    child: Column(
+      children: [
+        _buildCartItems(controller: controller),
+        _buildTotalPriceAndCheckout(controller: controller),
+      ],
+    ),
+  );
+}
+
+Widget _buildCartItems({
+  required CartController controller,
+}) {
+  return Expanded(
+    child: ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: controller.cartItems.length,
+      itemBuilder: (context, index) {
+        final cartItem = controller.cartItems[index];
+
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: AppSpacing.sm,
+            horizontal: AppSpacing.md,
+          ),
+          child: CartItemCard(
+            item: cartItem.item,
+            totalPrice: cartItem.totalPrice,
+            count: cartItem.quantity,
+            onAdd: () => controller.addItem(cartItem.item),
+            onRemove: () => controller.removeOne(cartItem.item.id),
+            onDelete: () => controller.deleteItem(cartItem.item.id),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget _buildTotalPriceAndCheckout({
+  required CartController controller,
+}) {
+  return Container(
+    padding: EdgeInsets.all(AppSpacing.md),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        top: BorderSide(
+          color: Colors.grey.withValues(alpha: 0.4),
+        ),
+      ),
+    ),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText(
+              "Total",
+              contentStyle: ContentStyle.labelLarge,
+              contentColor: AppColors.textSecondary,
+            ),
+            Obx(() => AppText(
+                  "${controller.totalPriceAll.toStringAsFixed(2)} \$",
+                  contentStyle: ContentStyle.titleLarge,
+                  fontWeight: FontWeight.w700,
+                )),
+          ],
+        ),
+        Gaps.h20,
+        AppButton(
+          variation: ButtonVariation.primary,
+          label: "Checkout",
+          onPressed: () {},
+        ),
+      ],
+    ),
+  );
 }

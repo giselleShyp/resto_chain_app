@@ -5,24 +5,24 @@ Built with Flutter, GetX & Firebase
 
 Features (Planned)
 
-Firebase Authentication
+- Firebase Authentication
 
-Multi-Restaurant Architecture
+- Multi-Restaurant Architecture
 
-Branch-based ordering system
+- Branch-based ordering system
 
-Cart & Checkout flow
+- Cart & Checkout flow
 
-Order status tracking
+- Order status tracking
 
-Clean Architecture with GetX
+- Clean Architecture with GetX
 
 Tech Stack
 
-Flutter
+- Flutter
 
-GetX
+- GetX
 
-Firebase Auth
+- Firebase Auth
 
-Cloud Firestore
+- Cloud Firestore

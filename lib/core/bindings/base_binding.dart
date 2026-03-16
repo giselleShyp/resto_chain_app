@@ -7,11 +7,8 @@ class BaseBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(BottomNavController(), permanent: true);
-    Get.put(OrdersController(), permanent: true);
     Get.put(CartController(), permanent: true);
 
-    // Get.lazyPut(() => BottomNavController(),);
-    // Get.lazyPut(() => OrdersController());
-    // Get.lazyPut(() => CartController());
+    Get.lazyPut(() => OrdersController());
   }
 }

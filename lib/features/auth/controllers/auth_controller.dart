@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
+import 'package:resto_chain_app/core/bindings/initial_binding.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/features/auth/errors/auth_error_mapper.dart';
 import 'package:resto_chain_app/features/auth/models/user_model.dart';
 import 'package:resto_chain_app/features/auth/services/auth_service.dart';
-import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
@@ -39,6 +38,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
       final userModel = await _authService.getUser(uid);
       currentUser.value = userModel;
+      debugPrint("Current userId : ${currentUser.value?.uid}");
     } finally {
       isLoading.value = false;
     }
@@ -114,11 +114,12 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    final bottomNavController = Get.find<BottomNavController>();
-    final cartController = Get.find<CartController>();
-    bottomNavController.changeIndex(0);
-    cartController.cartItems.value = [];
     await _authService.signOut();
-    currentUser.value = null;
+
+    await Get.deleteAll(force: true);
+
+    InitialBinding().dependencies();
+
+    Get.offAllNamed(AppRoutes.login);
   }
 }

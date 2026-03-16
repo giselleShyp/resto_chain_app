@@ -5,6 +5,7 @@ import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
+import 'package:resto_chain_app/core/widgets/dialog/show_clear_cart_dialog.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
 import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
@@ -21,7 +22,16 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       header: _buildCartHeader(
-        onPressed: controller.clearAll,
+        onPressed: () async {
+          if (controller.cartItems.isEmpty) {
+            return;
+          }
+          final confirm = await showClearCartDialog(context);
+
+          if (confirm == true) {
+            controller.clearAll();
+          }
+        },
       ),
       body: Obx(
         () {

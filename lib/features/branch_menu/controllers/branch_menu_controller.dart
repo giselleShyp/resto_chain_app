@@ -6,9 +6,9 @@ import 'package:resto_chain_app/features/branch_menu/services/branch_menu_servic
 import 'package:resto_chain_app/features/branches/models/branche_model.dart';
 
 class BranchMenuController extends GetxController {
-  final BranchModel branch;
+  final BranchModel branchModel;
 
-  BranchMenuController(this.branch);
+  BranchMenuController(this.branchModel);
 
   final BranchMenuService _service = BranchMenuService();
 
@@ -24,11 +24,13 @@ class BranchMenuController extends GetxController {
   final Map<String, List<MenuItemModel>> _itemsCache = {};
 
   late String branchId;
+  late String currentRestaurantId;
 
   @override
   void onInit() {
     super.onInit();
-    branchId = branch.id;
+    branchId = branchModel.id;
+    currentRestaurantId = branchModel.restaurantId;
 
     loadCategories();
   }

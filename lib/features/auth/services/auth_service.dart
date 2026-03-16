@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:resto_chain_app/features/auth/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   Future<UserModel> register({
     required String name,
@@ -18,8 +21,6 @@ class AuthService {
 
     final user = credential.user!;
 
-    await user.updateDisplayName(name);
-
     final userModel = UserModel(
       uid: user.uid,
       name: name,
@@ -27,7 +28,13 @@ class AuthService {
       createdAt: DateTime.now(),
     );
 
-    await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
+    try {
+      await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
+      debugPrint("✅ User document created in Firestore");
+    } catch (e, st) {
+      debugPrint("❌ Failed to create user document: $e");
+      debugPrint("$st");
+    }
 
     return userModel;
   }
@@ -43,12 +50,16 @@ class AuthService {
 
     final uid = credential.user!.uid;
 
+    return await getUser(uid);
+  }
+
+  Future<UserModel> getUser(String uid) async {
     final doc = await _firestore.collection('users').doc(uid).get();
 
     return UserModel.fromMap(doc.data()!);
   }
 
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await _auth.signOut();
   }
 }

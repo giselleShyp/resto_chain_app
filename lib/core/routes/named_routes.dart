@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/bindings/base_binding.dart';
 import 'package:resto_chain_app/core/layouts/main/base.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
+import 'package:resto_chain_app/features/auth/views/login_screen.dart';
+import 'package:resto_chain_app/features/auth/views/register_screen.dart';
 import 'package:resto_chain_app/features/branch_menu/binding/branch_menu_binding.dart';
 import 'package:resto_chain_app/features/branch_menu/views/branch_menu_screen.dart';
 import 'package:resto_chain_app/features/branches/binding/branches_binding.dart';
@@ -15,8 +18,19 @@ List<GetPage<dynamic>> routePages = [
     transition: Transition.fadeIn,
   ),
   GetPage(
+    name: AppRoutes.login,
+    page: () => const LoginScreen(),
+    transition: Transition.fadeIn,
+  ),
+  GetPage(
+    name: AppRoutes.register,
+    page: () => const RegisterScreen(),
+    transition: Transition.fadeIn,
+  ),
+  GetPage(
     name: AppRoutes.base,
     page: () => BaseScreen(),
+    binding: BaseBinding(),
     transition: Transition.fadeIn,
   ),
   GetPage(
@@ -27,8 +41,8 @@ List<GetPage<dynamic>> routePages = [
   ),
   GetPage(
     name: AppRoutes.branchMenu,
-    binding: BranchMenuBinding(),
     page: () => BranchMenuScreen(),
+    binding: BranchMenuBinding(),
     transition: Transition.fadeIn,
   ),
 ];

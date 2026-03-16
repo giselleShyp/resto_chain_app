@@ -23,7 +23,7 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            MenuItemAppBar(title: controller.branch.branchName),
+            MenuItemAppBar(title: controller.branchModel.branchName),
             Obx(() {
               if (controller.categoriesState.value == ViewState.success &&
                   controller.categories.isNotEmpty) {
@@ -75,7 +75,9 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
                             addItemToCart(
                               context: context,
                               item: item,
-                              branchId: controller.branchId,
+                              branchId: item.branchId,
+                              restaurantId: item.restaurantId,
+                              branchName: controller.branchModel.branchName,
                             );
                           },
                         ),
@@ -95,17 +97,30 @@ Future<void> addItemToCart({
   required BuildContext context,
   required MenuItemModel item,
   required String branchId,
+  required String restaurantId,
+  required String branchName,
 }) async {
   final cartController = Get.find<CartController>();
+
+  debugPrint("Screen branchId: $branchId");
+  debugPrint("Screen restaurantId :$restaurantId");
 
   if (!item.isAvailable) {
     return;
   }
 
-  final canAdd = cartController.canAddItem(branchId: branchId);
+  final canAdd = cartController.canAddItem(
+    branchId: branchId,
+    restaurantId: restaurantId,
+  );
 
   if (canAdd) {
-    cartController.addItem(item, branchId);
+    cartController.addItem(
+      item: item,
+      branchId: branchId,
+      restaurantId: restaurantId,
+      branchName: branchName,
+    );
     return;
   }
 
@@ -113,6 +128,11 @@ Future<void> addItemToCart({
 
   if (confirm == true) {
     cartController.clearAll();
-    cartController.addItem(item, branchId);
+    cartController.addItem(
+      item: item,
+      branchId: branchId,
+      restaurantId: restaurantId,
+      branchName: branchName,
+    );
   }
 }

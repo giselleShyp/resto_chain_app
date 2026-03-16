@@ -6,6 +6,7 @@ import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
+import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
 import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 import 'package:resto_chain_app/features/cart/views/cart_item_card.dart';
 import 'package:resto_chain_app/features/cart/views/state_view/cart_screen_empty.dart';
@@ -14,6 +15,7 @@ class CartScreen extends StatelessWidget {
   CartScreen({super.key});
 
   final controller = Get.find<CartController>();
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,15 @@ class CartScreen extends StatelessWidget {
       ),
       body: Obx(
         () {
-          return controller.cartItems.isEmpty
-              ? Expanded(child: CartScreenEmpty())
-              : _buildCartScreenBody(controller);
+          final userId = authController.currentUser.value?.uid ?? "";
+
+          if (controller.cartItems.isEmpty) {
+            return const CartScreenEmpty();
+          }
+          return _buildCartScreenBody(
+            controller,
+            userId,
+          );
         },
       ),
     );
@@ -51,12 +59,15 @@ Widget _buildCartHeader({
   );
 }
 
-Widget _buildCartScreenBody(CartController controller) {
+Widget _buildCartScreenBody(CartController controller, String userId) {
   return Expanded(
     child: Column(
       children: [
         _buildCartItems(controller: controller),
-        _buildTotalPriceAndCheckout(controller: controller),
+        _buildTotalPriceAndCheckoutButton(
+          controller: controller,
+          userId: userId,
+        ),
       ],
     ),
   );
@@ -81,8 +92,7 @@ Widget _buildCartItems({
             item: cartItem.item,
             totalPrice: cartItem.totalPrice,
             count: cartItem.quantity,
-            onAdd: () => controller.addItem(
-                cartItem.item, controller.currentBranchId ?? ""),
+            onAdd: () => controller.addItem(item: cartItem.item),
             onRemove: () => controller.removeOne(cartItem.item.id),
             onDelete: () => controller.deleteItem(cartItem.item.id),
           ),
@@ -92,8 +102,9 @@ Widget _buildCartItems({
   );
 }
 
-Widget _buildTotalPriceAndCheckout({
+Widget _buildTotalPriceAndCheckoutButton({
   required CartController controller,
+  required String userId,
 }) {
   return Container(
     padding: EdgeInsets.all(AppSpacing.md),
@@ -123,10 +134,23 @@ Widget _buildTotalPriceAndCheckout({
           ],
         ),
         Gaps.h20,
-        AppButton(
-          variation: ButtonVariation.primary,
-          label: "Checkout",
-          onPressed: () {},
+        Obx(
+          () => AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child: controller.isLoading.value
+                ? Center(child: CircularProgressIndicator())
+                : AppButton(
+                    variation: ButtonVariation.primary,
+                    label: "Checkout",
+                    onPressed: () {
+                      if (userId.isEmpty) {
+                        debugPrint("Can't Checkout because userId is null");
+                        return;
+                      }
+                      controller.checkout(userId: userId);
+                    },
+                  ),
+          ),
         ),
       ],
     ),

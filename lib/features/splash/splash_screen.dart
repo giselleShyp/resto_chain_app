@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:resto_chain_app/core/constants/app_assets.dart';
-import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
@@ -16,18 +13,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
-        Get.offAllNamed(AppRoutes.base);
-      } else {
-        Get.offAllNamed(AppRoutes.login);
-      }
-    });
-  }
+  //   FirebaseAuth.instance.authStateChanges().listen((user) {
+  //     if (user != null) {
+  //       Get.offAllNamed(AppRoutes.base);
+  //     } else {
+  //       Get.offAllNamed(AppRoutes.login);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

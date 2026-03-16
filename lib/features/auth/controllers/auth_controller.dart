@@ -1,16 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
+import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/features/auth/errors/auth_error_mapper.dart';
 import 'package:resto_chain_app/features/auth/models/user_model.dart';
 import 'package:resto_chain_app/features/auth/services/auth_service.dart';
+import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 
 class AuthController extends GetxController {
-  final AuthService authService = AuthService();
+  final AuthService _authService = AuthService();
+
+  // var currentUser = Rxn<UserModel>();
+  Rxn<UserModel> currentUser = Rxn<UserModel>();
 
   var isLoading = false.obs;
-  var currentUser = Rxn<UserModel>();
+
+  @override
+  void onInit() {
+    _authService.authStateChanges.listen(_handleAuthChanged);
+    super.onInit();
+  }
+
+  Future<void> _handleAuthChanged(User? firebaseUser) async {
+    if (firebaseUser == null) {
+      currentUser.value = null;
+      Get.offAllNamed(AppRoutes.login);
+      return;
+    }
+
+    await loadUser(firebaseUser.uid);
+    Get.offAllNamed(AppRoutes.base);
+  }
+
+  Future<void> loadUser(String uid) async {
+    try {
+      isLoading.value = true;
+      final userModel = await _authService.getUser(uid);
+      currentUser.value = userModel;
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<ResultModel<UserModel>> register(
     String name,
@@ -24,7 +56,7 @@ class AuthController extends GetxController {
       debugPrint("email :$email");
       debugPrint("password :$password");
 
-      final registerUserResult = await authService.register(
+      final registerUserResult = await _authService.register(
         name: name,
         email: email,
         password: password,
@@ -57,7 +89,7 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true;
 
-      final loginUserResult = await authService.login(
+      final loginUserResult = await _authService.login(
         email: email,
         password: password,
       );
@@ -82,7 +114,11 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    await authService.signOut();
+    final bottomNavController = Get.find<BottomNavController>();
+    final cartController = Get.find<CartController>();
+    bottomNavController.changeIndex(0);
+    cartController.cartItems.value = [];
+    await _authService.signOut();
     currentUser.value = null;
   }
 }

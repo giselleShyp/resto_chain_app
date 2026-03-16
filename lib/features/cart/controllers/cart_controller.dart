@@ -1,29 +1,57 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/models/cart_item_model.dart';
+import 'package:resto_chain_app/features/cart/services/cart_service.dart';
+import 'package:resto_chain_app/features/orders/enums/order_status_enum.dart';
+import 'package:resto_chain_app/features/orders/models/order_item_model.dart';
+import 'package:resto_chain_app/features/orders/models/order_model.dart';
+import 'package:uuid/uuid.dart';
 
 class CartController extends GetxController {
+  final CartService _cartService = CartService();
+
   final cartItems = <CartItemModel>[].obs;
 
   int get cartCount => cartItems.fold(0, (sum, e) => sum + e.quantity);
 
   double get totalPriceAll => cartItems.fold(0, (sum, e) => sum + e.totalPrice);
 
+  var isLoading = false.obs;
+
   String? currentBranchId;
+  String? currentRestaurantId;
+  String? currentBranchName;
 
   bool canAddItem({
     required String branchId,
+    required String restaurantId,
   }) {
     if (cartItems.isEmpty) return true;
 
-    if (currentBranchId != branchId) {
+    debugPrint("currentBranchId: $currentBranchId");
+    debugPrint("currentRestaurantId :$currentRestaurantId");
+
+    debugPrint("branchId: $branchId");
+    debugPrint("restaurantId :$restaurantId");
+
+    //Can't Add Item from another branch or restaurant
+    if (currentBranchId != branchId || currentRestaurantId != restaurantId) {
       return false;
     }
     return true;
   }
 
-  void addItem(MenuItemModel item, String branchId) {
+  void addItem({
+    required MenuItemModel item,
+    String? branchName,
+    String? branchId,
+    String? restaurantId,
+  }) {
     currentBranchId ??= branchId;
+    currentRestaurantId ??= restaurantId;
+    currentBranchName ??= branchName;
 
     // if (currentBranchId != branchId) {
     //   return ResultModel.failure(
@@ -63,5 +91,46 @@ class CartController extends GetxController {
   void clearAll() {
     cartItems.clear();
     currentBranchId = null;
+    currentRestaurantId = null;
+    currentBranchName = null;
+  }
+
+  Future<ResultModel> checkout({required String userId}) async {
+    if (cartItems.isEmpty) ResultModel.failure(message: "Cart Empty");
+
+    debugPrint("userId :$userId");
+
+    final order = OrderModel(
+      id: const Uuid().v4(),
+      userId: userId,
+      restaurantId: currentRestaurantId!,
+      branchId: currentBranchId!,
+      branchName: currentBranchName!,
+      status: OrderStatus.preparing,
+      totalPrice: totalPriceAll,
+      createdAt: DateTime.now(),
+      items: cartItems.map((e) {
+        return OrderItemModel(
+          name: e.item.name,
+          price: e.item.price,
+          quantity: e.quantity,
+        );
+      }).toList(),
+    );
+    try {
+      isLoading.value = true;
+      await _cartService.setOrder(order);
+
+      clearAll();
+
+      isLoading.value = false;
+
+      return ResultModel.success(
+        message: "Order Recorded",
+      );
+    } catch (e) {
+      isLoading.value = false;
+      return ResultModel.failure(message: e.toString());
+    }
   }
 }

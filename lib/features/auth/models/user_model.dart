@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String uid;
   final String name;
@@ -16,7 +18,7 @@ class UserModel {
       uid: user['uid'],
       name: user['name'],
       email: user['email'],
-      createdAt: DateTime.parse(user['createdAt']),
+      createdAt: (user['createdAt'] as Timestamp).toDate(),
     );
   }
 
@@ -25,7 +27,7 @@ class UserModel {
       'uid': uid,
       'name': name,
       'email': email,
-      'createdAt': createdAt.toIso8601String()
+      'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 }

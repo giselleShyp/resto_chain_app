@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:resto_chain_app/core/layouts/main/shared/bottom_nav_item.dart';
+import 'package:resto_chain_app/core/styles/radius/app_radius.dart';
+import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
+import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
-  const MainBottomNavigationBar({
+  MainBottomNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
@@ -13,6 +17,8 @@ class MainBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
   final List<BottomNavItem> items;
+
+  final CartController cartController = Get.find<CartController>();
 
   @override
   State<MainBottomNavigationBar> createState() =>
@@ -26,7 +32,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
       color: Theme.of(context).colorScheme.onPrimary,
       child: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 24),
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
             border: Border(
@@ -40,7 +46,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
             children: List.generate(
               widget.items.length,
               (index) => Builder(builder: (context) {
-                return GestureDetector(
+                return InkWell(
                   onTap: () {
                     if (widget.currentIndex != index) {
                       widget.onTap(index);
@@ -48,25 +54,37 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
                   },
                   child: Stack(
                     children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: BottomNavBarIcon(
-                              icon: widget.items[index].icon,
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: BottomNavBarIcon(
+                                icon: widget.items[index].icon,
+                                index: index,
+                                currentIndex: widget.currentIndex,
+                              ),
+                            ),
+                            BottomNavBarLabel(
+                              label: widget.items[index].label,
                               index: index,
                               currentIndex: widget.currentIndex,
                             ),
-                          ),
-                          BottomNavBarLabel(
-                            label: widget.items[index].label,
-                            index: index,
-                            currentIndex: widget.currentIndex,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      index == 2
+                          ? Obx(() {
+                              return _buildCartBadge(
+                                context: context,
+                                cartCount: widget.cartController.cartCount,
+                              );
+                            })
+                          : SizedBox.shrink(),
                     ],
                   ),
                 );
@@ -134,4 +152,31 @@ class BottomNavBarLabel extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildCartBadge({
+  required BuildContext context,
+  required int cartCount,
+}) {
+  return Visibility(
+    visible: cartCount != 0,
+    child: Positioned(
+      right: 8,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.xs + 2, vertical: AppSpacing.xxs),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.l),
+          color: Theme.of(context).colorScheme.primaryContainer,
+        ),
+        child: AppText(
+          cartCount.toString(),
+          contentStyle: ContentStyle.labelSmall,
+          // fontSize: 8,
+          fontWeight: FontWeight.w600,
+          contentColor: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+    ),
+  );
 }

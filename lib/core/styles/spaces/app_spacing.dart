@@ -15,6 +15,7 @@ class AppSpacing {
     _scale = _scale.clamp(0.85, 1.25);
   }
 
+  static double get xxs => 2 * _scale;
   static double get xs => 4 * _scale;
   static double get sm => 8 * _scale;
   static double get md => 16 * _scale;

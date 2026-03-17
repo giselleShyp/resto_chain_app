@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/dialog/show_switch_cart_dialog.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
@@ -58,31 +60,37 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
               case ViewState.success:
                 return Padding(
                   padding: EdgeInsets.all(AppSpacing.md),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: controller.items.length,
-                    itemBuilder: (context, index) {
-                      final item = controller.items[index];
+                  child: AnimationLimiter(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: controller.items.length,
+                      itemBuilder: (context, index) {
+                        final item = controller.items[index];
 
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: AppSpacing.md),
-                        child: MenuItemCard(
-                          name: item.name,
-                          description: item.description,
-                          imageUrl: item.imageUrl,
-                          price: item.price,
-                          onAdd: () {
-                            addItemToCart(
-                              context: context,
-                              item: item,
-                              branchId: item.branchId,
-                              restaurantId: item.restaurantId,
-                              branchName: controller.branchModel.branchName,
-                            );
-                          },
-                        ),
-                      );
-                    },
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: AppSpacing.md),
+                          child: AnimatedGridView(
+                            position: index,
+                            verticalOffset: 50.0,
+                            child: MenuItemCard(
+                              name: item.name,
+                              description: item.description,
+                              imageUrl: item.imageUrl,
+                              price: item.price,
+                              onAdd: () {
+                                addItemToCart(
+                                  context: context,
+                                  item: item,
+                                  branchId: item.branchId,
+                                  restaurantId: item.restaurantId,
+                                  branchName: controller.branchModel.branchName,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 );
             }

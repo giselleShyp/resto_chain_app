@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/constants/app_assets.dart';
@@ -8,6 +9,7 @@ import 'package:resto_chain_app/core/layouts/main/main_layout.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
+import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/restaurant_card/restaurant_card.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
@@ -26,18 +28,6 @@ class RestaurantsScreen extends StatelessWidget {
       header: _buildHeader(),
       body: _buildBody(controller: controller),
     );
-
-    // SafeArea(
-    //   child: Scaffold(
-    //     body: Column(
-    //       children: [
-    //         _buildHeader(),
-    //         AppDivider(),
-    //         _buildBody(controller: controller),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
 
@@ -101,29 +91,39 @@ Widget _buildBody({
                 horizontal: AppSpacing.md,
                 vertical: AppSpacing.md,
               ),
-              child: GridView.builder(
-                // padding: const EdgeInsets.all(AppRadius.md),
-                itemCount: controller.restaurants.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 0.75,
-                ),
-                itemBuilder: (context, index) {
-                  final restaurant = controller.restaurants[index];
+              child: AnimationLimiter(
+                child: GridView.builder(
+                  // padding: const EdgeInsets.all(AppRadius.md),
+                  itemCount: controller.restaurants.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemBuilder: (context, index) {
+                    final restaurant = controller.restaurants[index];
 
-                  return RestaurantCard(
-                    key: ValueKey(index),
-                    logoUrl: restaurant.logoUrl,
-                    restaurantName: restaurant.name,
-                    restaurantDescription: restaurant.description,
-                    index: index,
-                    onTap: () {
-                      Get.toNamed(AppRoutes.branches, arguments: restaurant);
-                    },
-                  );
-                },
+                    return AnimatedGridView(
+                      position: index,
+                      columnCount: 2,
+                      verticalOffset: 50.0,
+                      duration: const Duration(milliseconds: 500),
+                      delay: const Duration(milliseconds: 250),
+                      child: RestaurantCard(
+                        key: ValueKey(index),
+                        logoUrl: restaurant.logoUrl,
+                        restaurantName: restaurant.name,
+                        restaurantDescription: restaurant.description,
+                        index: index,
+                        onTap: () {
+                          Get.toNamed(AppRoutes.branches,
+                              arguments: restaurant);
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             );
         }

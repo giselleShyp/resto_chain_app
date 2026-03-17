@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/layouts/main/main_layout.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
+import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
 import 'package:resto_chain_app/core/widgets/dialog/show_clear_cart_dialog.dart';
@@ -87,27 +89,33 @@ Widget _buildCartItems({
   required CartController controller,
 }) {
   return Expanded(
-    child: ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: controller.cartItems.length,
-      itemBuilder: (context, index) {
-        final cartItem = controller.cartItems[index];
+    child: AnimationLimiter(
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        itemCount: controller.cartItems.length,
+        itemBuilder: (context, index) {
+          final cartItem = controller.cartItems[index];
 
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: AppSpacing.sm,
-            horizontal: AppSpacing.md,
-          ),
-          child: CartItemCard(
-            item: cartItem.item,
-            totalPrice: cartItem.totalPrice,
-            count: cartItem.quantity,
-            onAdd: () => controller.addItem(item: cartItem.item),
-            onRemove: () => controller.removeOne(cartItem.item.id),
-            onDelete: () => controller.deleteItem(cartItem.item.id),
-          ),
-        );
-      },
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: AppSpacing.sm,
+              horizontal: AppSpacing.md,
+            ),
+            child: AnimatedGridView(
+              position: index,
+              horizontalOffset: -50.0,
+              child: CartItemCard(
+                item: cartItem.item,
+                totalPrice: cartItem.totalPrice,
+                count: cartItem.quantity,
+                onAdd: () => controller.addItem(item: cartItem.item),
+                onRemove: () => controller.removeOne(cartItem.item.id),
+                onDelete: () => controller.deleteItem(cartItem.item.id),
+              ),
+            ),
+          );
+        },
+      ),
     ),
   );
 }

@@ -32,43 +32,48 @@ Widget _buildHeader() {
 }
 
 Widget _buildBody({required OrdersController ordersController}) {
-  return Obx(() {
-    switch (ordersController.state.value) {
-      case ViewState.loading:
-        return CircularProgressIndicator();
+  return Obx(
+    () {
+      switch (ordersController.state.value) {
+        case ViewState.loading:
+          return CircularProgressIndicator();
 
-      case ViewState.error:
-        return AppText(
-          ordersController.errorMessage.value ?? "Something went wrong",
-        );
+        case ViewState.error:
+          return AppText(
+            ordersController.errorMessage.value ?? "Something went wrong",
+          );
 
-      case ViewState.empty:
-        return AppText("No Orders Yet");
-      case ViewState.success:
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.md),
-            child: AnimationLimiter(
-              child: ListView.builder(
-                itemCount: ordersController.orders.length,
-                itemBuilder: (context, index) {
-                  final order = ordersController.orders[index];
-                  return AnimatedGridView(
-                    position: index,
-                    verticalOffset: 50.0,
-                    child: OrderCard(
-                      branchName: order.branchName,
-                      orderDate: order.createdAt,
-                      orderStatus: order.status,
-                      orderItems: order.items,
-                      orderPrice: order.totalPrice,
-                    ),
-                  );
-                },
+        case ViewState.empty:
+          return AppText("No Orders Yet");
+        case ViewState.success:
+          return Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => ordersController.refresh(),
+              child: AnimationLimiter(
+                key: UniqueKey(),
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  itemCount: ordersController.orders.length,
+                  itemBuilder: (context, index) {
+                    final order = ordersController.orders[index];
+                    return AnimatedGridView(
+                      position: index,
+                      verticalOffset: 50.0,
+                      child: OrderCard(
+                        branchName: order.branchName,
+                        orderDate: order.createdAt,
+                        orderStatus: order.status,
+                        orderItems: order.items,
+                        orderPrice: order.totalPrice,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        );
-    }
-  });
+          );
+      }
+    },
+  );
 }

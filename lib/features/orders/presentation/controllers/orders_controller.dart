@@ -1,4 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
@@ -19,41 +20,42 @@ class OrdersController extends GetxController {
 
   @override
   void onInit() {
-    userId = auth.currentUser.value?.uid ?? "";
-    debugPrint("Load orders for user :$userId ");
-    _listenToUserOrders();
     super.onInit();
+    _initOrders();
   }
 
-  Future<void> _listenToUserOrders() async {
+  void _initOrders() {
     state.value = ViewState.loading;
+    errorMessage.value = null;
 
-    try {
-      ordersRepository.getOrders(userId).listen(
-        (data) {
-          if (data.isEmpty) {
-            state.value = ViewState.empty;
-          } else {
-            orders.value = data;
-            state.value = ViewState.success;
-          }
-        },
-        onError: (error) {
-          errorMessage.value = error.toString();
-          state.value = ViewState.error;
-        },
-      );
-    } catch (e) {
-      errorMessage.value = e.toString();
+    final String uid = auth.currentUser.value?.uid ?? "";
+
+    final stream = ordersRepository.getOrders(uid).handleError((error) {
+      // Handle Firebase/Network errors here
+      errorMessage.value = error.toString();
       state.value = ViewState.error;
-    }
+    });
 
-    state.value = orders.isEmpty ? ViewState.empty : ViewState.success;
+    // bindStream automatically manages the subscription for you!
+    orders.bindStream(stream.map((data) {
+      if (data.isEmpty) {
+        state.value = ViewState.empty;
+      } else {
+        state.value = ViewState.success;
+      }
+      return data;
+    }));
   }
 
   @override
   Future<void> refresh() async {
-    await _listenToUserOrders();
+    // To trigger the animation from your video again, we flicker the state
+    state.value = ViewState.loading;
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    // Re-binding automatically replaces the old stream
+    _initOrders();
+
     super.refresh();
   }
 }

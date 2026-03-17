@@ -1,4 +1,4 @@
-import 'package:resto_chain_app/features/branches/models/working_hour.dart';
+import 'package:resto_chain_app/features/branches/data/models/working_hour.dart';
 
 class BranchModel {
   final String id;

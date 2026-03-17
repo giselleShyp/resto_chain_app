@@ -3,8 +3,8 @@ import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
-class BranchesEmptyScreen extends StatelessWidget {
-  const BranchesEmptyScreen({
+class BranchesEmptyState extends StatelessWidget {
+  const BranchesEmptyState({
     super.key,
     required this.message,
   });

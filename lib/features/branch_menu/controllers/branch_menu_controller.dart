@@ -3,7 +3,7 @@ import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_category.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/branch_menu/services/branch_menu_service.dart';
-import 'package:resto_chain_app/features/branches/models/branche_model.dart';
+import 'package:resto_chain_app/features/branches/data/models/branche_model.dart';
 
 class BranchMenuController extends GetxController {
   final BranchModel branchModel;

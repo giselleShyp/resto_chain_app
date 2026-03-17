@@ -1,15 +1,15 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
-import 'package:resto_chain_app/features/branches/models/branche_model.dart';
-import 'package:resto_chain_app/features/branches/services/branches_service.dart';
+import 'package:resto_chain_app/features/branches/data/models/branche_model.dart';
+import 'package:resto_chain_app/features/branches/data/repositories/branches_repository.dart';
 import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
 
 class BranchesController extends GetxController {
+  final BranchesRepository branchesRepository;
+
   final RestaurantModel restaurant;
 
-  BranchesController(this.restaurant);
-
-  final BranchesService _service = BranchesService();
+  BranchesController(this.restaurant, this.branchesRepository);
 
   final branches = <BranchModel>[].obs;
   final state = ViewState.loading.obs;
@@ -29,8 +29,8 @@ class BranchesController extends GetxController {
     state.value = ViewState.loading;
 
     try {
-      final result =
-          await _service.getBranchesByRestaurant(restaurantId: _restaurantId);
+      final result = await branchesRepository.getBranchesByRestaurant(
+          restaurantId: _restaurantId);
 
       if (result.isEmpty) {
         state.value = ViewState.empty;

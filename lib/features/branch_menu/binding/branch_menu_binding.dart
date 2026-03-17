@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/features/branch_menu/controllers/branch_menu_controller.dart';
-import 'package:resto_chain_app/features/branches/models/branche_model.dart';
+import 'package:resto_chain_app/features/branches/data/models/branche_model.dart';
 
 class BranchMenuBinding extends Bindings {
   @override

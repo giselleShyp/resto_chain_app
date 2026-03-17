@@ -6,11 +6,11 @@ import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/branches/controllers/branches_controller.dart';
-import 'package:resto_chain_app/features/branches/views/state_views/branches_empty_screen.dart';
-import 'package:resto_chain_app/features/branches/views/state_views/branches_error_screen.dart';
-import 'package:resto_chain_app/features/branches/views/state_views/branches_loading_screen.dart';
-import 'package:resto_chain_app/features/branches/views/widgets/branch_card.dart';
+import 'package:resto_chain_app/features/branches/presentation/controllers/branches_controller.dart';
+import 'package:resto_chain_app/features/branches/presentation/widgets/branches_empty_state.dart';
+import 'package:resto_chain_app/features/branches/presentation/widgets/branches_error_state.dart';
+import 'package:resto_chain_app/features/branches/presentation/widgets/branches_loading_state.dart';
+import 'package:resto_chain_app/features/branches/presentation/widgets/branch_card.dart';
 
 class BranchesScreen extends GetView<BranchesController> {
   const BranchesScreen({super.key});
@@ -36,16 +36,16 @@ class BranchesScreen extends GetView<BranchesController> {
         () {
           switch (controller.state.value) {
             case ViewState.loading:
-              return BranchesLoadingScreen();
+              return BranchesLoadingState();
 
             case ViewState.error:
-              return BranchesErrorScreen(
+              return BranchesErrorState(
                 message: "Somethings wrong happen",
                 onTap: () => controller.refresh(),
               );
 
             case ViewState.empty:
-              return BranchesEmptyScreen(message: "No branches found");
+              return BranchesEmptyState(message: "No branches found");
 
             case ViewState.success:
               return Padding(

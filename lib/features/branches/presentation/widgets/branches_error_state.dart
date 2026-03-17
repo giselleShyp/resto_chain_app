@@ -3,8 +3,8 @@ import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
-class BranchesErrorScreen extends StatelessWidget {
-  const BranchesErrorScreen({
+class BranchesErrorState extends StatelessWidget {
+  const BranchesErrorState({
     super.key,
     required this.message,
     required this.onTap,

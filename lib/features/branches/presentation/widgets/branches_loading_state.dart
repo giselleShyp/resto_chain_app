@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/shimmer/container_shimmer_loader.dart';
 
-class BranchesLoadingScreen extends StatelessWidget {
-  const BranchesLoadingScreen({super.key});
+class BranchesLoadingState extends StatelessWidget {
+  const BranchesLoadingState({super.key});
 
   @override
   Widget build(BuildContext context) {

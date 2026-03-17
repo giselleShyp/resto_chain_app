@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/features/branches/models/branche_model.dart';
 import 'package:resto_chain_app/features/branches/services/branches_service.dart';
-import 'package:resto_chain_app/features/restaurants/models/restaurant_model.dart';
+import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
 
 class BranchesController extends GetxController {
   final RestaurantModel restaurant;

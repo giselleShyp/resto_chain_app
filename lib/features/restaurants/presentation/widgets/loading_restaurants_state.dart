@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/shimmer/container_shimmer_loader.dart';
 
-class RestaurantsLoadingScreen extends StatelessWidget {
-  const RestaurantsLoadingScreen({super.key});
+class LoadingRestaurantsState extends StatelessWidget {
+  const LoadingRestaurantsState({super.key});
 
   @override
   Widget build(BuildContext context) {

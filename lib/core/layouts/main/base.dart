@@ -6,7 +6,7 @@ import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
 import 'package:resto_chain_app/core/layouts/main/shared/bottom_nav_item.dart';
 import 'package:resto_chain_app/core/layouts/main/shared/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:resto_chain_app/features/cart/views/cart_screen.dart';
-import 'package:resto_chain_app/features/restaurants/views/restaurants_screen.dart';
+import 'package:resto_chain_app/features/restaurants/presentation/screens/restaurants_screen.dart';
 import 'package:resto_chain_app/features/orders/presentation/screens/orders_screen.dart';
 import 'package:resto_chain_app/features/profile/views/profile_screen.dart';
 

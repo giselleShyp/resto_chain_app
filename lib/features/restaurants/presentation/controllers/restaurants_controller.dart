@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
-import 'package:resto_chain_app/features/restaurants/models/restaurant_model.dart';
-import 'package:resto_chain_app/features/restaurants/services/restaurants_service.dart';
+import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
+import 'package:resto_chain_app/features/restaurants/data/repositories/restaurants_repository.dart';
 
-class RestaurantController extends GetxController {
-  final RestaurantsService _service = RestaurantsService();
+class RestaurantsController extends GetxController {
+  final RestaurantsRepository restaurantsRepository;
+
+  RestaurantsController(this.restaurantsRepository);
 
   final restaurants = <RestaurantModel>[].obs;
   final state = ViewState.loading.obs;
@@ -19,7 +21,7 @@ class RestaurantController extends GetxController {
   void _listenToRestaurants() {
     state.value = ViewState.loading;
 
-    _service.getRestaurants().listen(
+    restaurantsRepository.getRestaurantsRepo().listen(
       (data) {
         if (data.isEmpty) {
           state.value = ViewState.empty;

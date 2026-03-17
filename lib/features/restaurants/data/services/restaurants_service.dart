@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:resto_chain_app/features/restaurants/models/restaurant_model.dart';
+import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
 
 class RestaurantsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

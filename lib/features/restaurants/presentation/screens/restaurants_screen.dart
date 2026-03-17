@@ -13,15 +13,16 @@ import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_vi
 import 'package:resto_chain_app/core/widgets/restaurant_card/restaurant_card.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
-import 'package:resto_chain_app/features/restaurants/controllers/restaurant_controller.dart';
-import 'package:resto_chain_app/features/restaurants/views/state_views/restaurants_empty_screen.dart';
-import 'package:resto_chain_app/features/restaurants/views/state_views/restaurants_error_screen.dart';
-import 'package:resto_chain_app/features/restaurants/views/state_views/restaurants_loading_screen.dart';
+import 'package:resto_chain_app/features/restaurants/presentation/controllers/restaurants_controller.dart';
+import 'package:resto_chain_app/features/restaurants/presentation/widgets/empty_restaurants_state.dart';
+import 'package:resto_chain_app/features/restaurants/presentation/widgets/error_restaurants_state.dart';
+import 'package:resto_chain_app/features/restaurants/presentation/widgets/loading_restaurants_state.dart';
 
 class RestaurantsScreen extends StatelessWidget {
   RestaurantsScreen({super.key});
 
-  final controller = Get.put(RestaurantController());
+  final controller = Get.find<RestaurantsController>();
+
   @override
   Widget build(BuildContext context) {
     return MainLayout(
@@ -69,22 +70,22 @@ Widget _buildHeader() {
 }
 
 Widget _buildBody({
-  required RestaurantController controller,
+  required RestaurantsController controller,
 }) {
   return Expanded(
     child: Obx(
       () {
         switch (controller.state.value) {
           case ViewState.loading:
-            return RestaurantsLoadingScreen();
+            return LoadingRestaurantsState();
 
           case ViewState.error:
-            return RestaurantsErrorScreen(
+            return ErrorRestaurantsState(
               message: controller.errorMessage.value ?? "Something went wrong",
             );
 
           case ViewState.empty:
-            return RestaurantsEmptyScreen(message: "No restaurants available");
+            return EmptyRestaurantsState(message: "No restaurants available");
           case ViewState.success:
             return Padding(
               padding: EdgeInsets.symmetric(

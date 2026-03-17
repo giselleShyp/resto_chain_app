@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
-class RestaurantsEmptyScreen extends StatelessWidget {
-  const RestaurantsEmptyScreen({
+class ErrorRestaurantsState extends StatelessWidget {
+  const ErrorRestaurantsState({
     super.key,
     required this.message,
   });
@@ -16,7 +16,7 @@ class RestaurantsEmptyScreen extends StatelessWidget {
       child: AppText(
         message,
         contentStyle: ContentStyle.titleLarge,
-        contentColor: AppColors.textSecondary,
+        contentColor: AppColors.error,
         fontWeight: FontWeight.w500,
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_category.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/category_chip.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_category.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/category_chip.dart';
 
 class MenuItemCategories extends StatelessWidget {
   const MenuItemCategories({

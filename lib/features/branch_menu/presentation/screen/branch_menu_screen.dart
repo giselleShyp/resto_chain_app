@@ -3,17 +3,17 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/dialog/show_switch_cart_dialog.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
-import 'package:resto_chain_app/features/branch_menu/controllers/branch_menu_controller.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/header/menu_item_app_bar.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/header/menu_item_categories.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_card.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_empty_state.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_error_state.dart';
-import 'package:resto_chain_app/features/branch_menu/views/widgets/menu_item_states/menu_item_loading_state.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/controllers/branch_menu_controller.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/header/menu_item_app_bar.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/header/menu_item_categories.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/menu_item_card.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/menu_item_states/menu_item_empty_state.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/menu_item_states/menu_item_error_state.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/widgets/menu_item_states/menu_item_loading_state.dart';
 
 class BranchMenuScreen extends GetView<BranchMenuController> {
   const BranchMenuScreen({super.key});

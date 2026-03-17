@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/data/models/cart_item_model.dart';
 import 'package:resto_chain_app/features/cart/data/repositories/cart_repository.dart';
 import 'package:resto_chain_app/features/orders/data/enums/order_status_enum.dart';

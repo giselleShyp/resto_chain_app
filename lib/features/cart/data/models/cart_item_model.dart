@@ -1,4 +1,4 @@
-import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 
 class CartItemModel {
   final MenuItemModel item;

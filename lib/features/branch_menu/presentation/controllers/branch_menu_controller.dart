@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_category.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
-import 'package:resto_chain_app/features/branch_menu/services/branch_menu_service.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_category.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
+import 'package:resto_chain_app/features/branch_menu/data/repositories/branch_menu_repository.dart';
 import 'package:resto_chain_app/features/branches/data/models/branche_model.dart';
 
 class BranchMenuController extends GetxController {
+  final BranchMenuRepository branchesMenuRepository;
+
   final BranchModel branchModel;
 
-  BranchMenuController(this.branchModel);
-
-  final BranchMenuService _service = BranchMenuService();
+  BranchMenuController(this.branchModel, this.branchesMenuRepository);
 
   final categories = <MenuCategory>[].obs;
   final items = <MenuItemModel>[].obs;
@@ -39,7 +39,8 @@ class BranchMenuController extends GetxController {
     categoriesState.value = ViewState.loading;
 
     try {
-      final result = await _service.getCategories(branchId: branchId);
+      final result =
+          await branchesMenuRepository.getCategories(branchId: branchId);
 
       categories.value = result;
 
@@ -71,7 +72,7 @@ class BranchMenuController extends GetxController {
     itemsState.value = ViewState.loading;
 
     try {
-      final result = await _service.getItemsByCategory(
+      final result = await branchesMenuRepository.getItemsByCategory(
         branchId: branchId,
         categoryId: categoryId,
       );

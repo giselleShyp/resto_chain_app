@@ -7,7 +7,7 @@ import 'package:resto_chain_app/core/widgets/app_cached_network_image/app_cached
 import 'package:resto_chain_app/core/widgets/base_card.dart/base_card.dart';
 import 'package:resto_chain_app/core/widgets/opacity_container/opacity_container.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
+import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 
 class CartItemCard extends StatelessWidget {
   const CartItemCard({

@@ -6,8 +6,8 @@ import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/base_card.dart/base_card.dart';
 import 'package:resto_chain_app/core/widgets/divider/app_divider.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/orders/enums/order_status_enum.dart';
-import 'package:resto_chain_app/features/orders/models/order_item_model.dart';
+import 'package:resto_chain_app/features/orders/data/enums/order_status_enum.dart';
+import 'package:resto_chain_app/features/orders/data/models/order_item_model.dart';
 
 class OrderCard extends StatelessWidget {
   const OrderCard({

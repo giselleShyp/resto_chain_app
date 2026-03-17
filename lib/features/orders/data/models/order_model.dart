@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:resto_chain_app/features/orders/enums/order_status_enum.dart';
-import 'package:resto_chain_app/features/orders/models/order_item_model.dart';
+import 'package:resto_chain_app/features/orders/data/enums/order_status_enum.dart';
+import 'package:resto_chain_app/features/orders/data/models/order_item_model.dart';
 
 class OrderModel {
   final String id;

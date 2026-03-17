@@ -4,9 +4,9 @@ import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/models/cart_item_model.dart';
 import 'package:resto_chain_app/features/cart/services/cart_service.dart';
-import 'package:resto_chain_app/features/orders/enums/order_status_enum.dart';
-import 'package:resto_chain_app/features/orders/models/order_item_model.dart';
-import 'package:resto_chain_app/features/orders/models/order_model.dart';
+import 'package:resto_chain_app/features/orders/data/enums/order_status_enum.dart';
+import 'package:resto_chain_app/features/orders/data/models/order_item_model.dart';
+import 'package:resto_chain_app/features/orders/data/models/order_model.dart';
 import 'package:uuid/uuid.dart';
 
 class CartController extends GetxController {

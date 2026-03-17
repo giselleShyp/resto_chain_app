@@ -2,14 +2,16 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
 import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
-import 'package:resto_chain_app/features/orders/models/order_model.dart';
-import 'package:resto_chain_app/features/orders/services/orders_service.dart';
+import 'package:resto_chain_app/features/orders/data/models/order_model.dart';
+import 'package:resto_chain_app/features/orders/data/repositories/orders_repositories.dart';
 
 class OrdersController extends GetxController {
-  final OrdersService _ordersService = OrdersService();
+  final OrdersRepository ordersRepository;
 
-  final errorMessage = RxnString();
+  OrdersController(this.ordersRepository);
+
   final orders = <OrderModel>[].obs;
+  final errorMessage = RxnString();
   final state = ViewState.loading.obs;
 
   final auth = Get.find<AuthController>();
@@ -27,7 +29,7 @@ class OrdersController extends GetxController {
     state.value = ViewState.loading;
 
     try {
-      _ordersService.getOrdersByUser(userId).listen(
+      ordersRepository.getOrders(userId).listen(
         (data) {
           if (data.isEmpty) {
             state.value = ViewState.empty;

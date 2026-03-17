@@ -9,8 +9,8 @@ import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 
-class CartScreenEmpty extends StatelessWidget {
-  const CartScreenEmpty({super.key});
+class CartEmptyState extends StatelessWidget {
+  const CartEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:resto_chain_app/core/layouts/main/shared/bottom_nav_item.dart';
 import 'package:resto_chain_app/core/styles/radius/app_radius.dart';
 import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/presentation/controllers/cart_controller.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
   MainBottomNavigationBar({

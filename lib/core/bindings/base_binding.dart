@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/controllers/bottom_nav_controller.dart';
-import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:resto_chain_app/features/cart/data/services/cart_service.dart';
+import 'package:resto_chain_app/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:resto_chain_app/features/orders/data/repositories/orders_repository.dart';
 import 'package:resto_chain_app/features/orders/data/services/orders_service.dart';
 import 'package:resto_chain_app/features/orders/presentation/controllers/orders_controller.dart';
@@ -12,7 +14,11 @@ class BaseBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(BottomNavController(), permanent: true);
-    Get.put(CartController(), permanent: true);
+
+    //Cart
+    Get.lazyPut(() => CartService());
+    Get.lazyPut(() => CartRepository(Get.find()));
+    Get.put(CartController(Get.find()), permanent: true);
 
     //Restaurant
     Get.lazyPut(() => RestaurantsService());

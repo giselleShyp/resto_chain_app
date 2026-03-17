@@ -2,15 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/features/branch_menu/models/menu_item_model.dart';
-import 'package:resto_chain_app/features/cart/models/cart_item_model.dart';
-import 'package:resto_chain_app/features/cart/services/cart_service.dart';
+import 'package:resto_chain_app/features/cart/data/models/cart_item_model.dart';
+import 'package:resto_chain_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:resto_chain_app/features/cart/data/services/cart_service.dart';
 import 'package:resto_chain_app/features/orders/data/enums/order_status_enum.dart';
 import 'package:resto_chain_app/features/orders/data/models/order_item_model.dart';
 import 'package:resto_chain_app/features/orders/data/models/order_model.dart';
 import 'package:uuid/uuid.dart';
 
 class CartController extends GetxController {
-  final CartService _cartService = CartService();
+  final CartRepository cartRepository;
+
+  CartController(this.cartRepository);
 
   final cartItems = <CartItemModel>[].obs;
 
@@ -119,7 +122,7 @@ class CartController extends GetxController {
     );
     try {
       isLoading.value = true;
-      await _cartService.setOrder(order);
+      await cartRepository.addOrder(order);
 
       clearAll();
 

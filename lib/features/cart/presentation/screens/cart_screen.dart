@@ -10,9 +10,9 @@ import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
 import 'package:resto_chain_app/core/widgets/dialog/show_clear_cart_dialog.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
-import 'package:resto_chain_app/features/cart/controllers/cart_controller.dart';
-import 'package:resto_chain_app/features/cart/views/cart_item_card.dart';
-import 'package:resto_chain_app/features/cart/views/state_view/cart_screen_empty.dart';
+import 'package:resto_chain_app/features/cart/presentation/controllers/cart_controller.dart';
+import 'package:resto_chain_app/features/cart/presentation/widgets/cart_item_card.dart';
+import 'package:resto_chain_app/features/cart/presentation/widgets/cart_empty_state.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
@@ -40,7 +40,7 @@ class CartScreen extends StatelessWidget {
           final userId = authController.currentUser.value?.uid ?? "";
 
           if (controller.cartItems.isEmpty) {
-            return const CartScreenEmpty();
+            return const CartEmptyState();
           }
           return _buildCartScreenBody(
             controller,

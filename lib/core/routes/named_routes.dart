@@ -5,9 +5,9 @@ import 'package:resto_chain_app/core/routes/routes_names.dart';
 import 'package:resto_chain_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:resto_chain_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:resto_chain_app/features/branch_menu/presentation/binding/branch_menu_binding.dart';
-import 'package:resto_chain_app/features/branch_menu/presentation/screen/branch_menu_screen.dart';
+import 'package:resto_chain_app/features/branch_menu/presentation/screens/branch_menu_screen.dart';
 import 'package:resto_chain_app/features/branches/presentation/binding/branches_binding.dart';
-import 'package:resto_chain_app/features/branches/presentation/views/branches_screen.dart';
+import 'package:resto_chain_app/features/branches/presentation/screens/branches_screen.dart';
 import 'package:resto_chain_app/features/splash/splash_screen.dart';
 
 // Pair routes' names with the corresponding pages

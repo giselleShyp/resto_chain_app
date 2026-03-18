@@ -19,15 +19,13 @@ import 'package:resto_chain_app/features/restaurants/presentation/widgets/error_
 import 'package:resto_chain_app/features/restaurants/presentation/widgets/loading_restaurants_state.dart';
 
 class RestaurantsScreen extends StatelessWidget {
-  RestaurantsScreen({super.key});
-
-  final controller = Get.find<RestaurantsController>();
+  const RestaurantsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
       header: _buildHeader(),
-      body: _buildBody(controller: controller),
+      body: _buildBody(),
     );
   }
 }
@@ -69,12 +67,12 @@ Widget _buildHeader() {
   );
 }
 
-Widget _buildBody({
-  required RestaurantsController controller,
-}) {
+Widget _buildBody() {
   return Expanded(
     child: Obx(
       () {
+        final controller = Get.find<RestaurantsController>();
+
         switch (controller.state.value) {
           case ViewState.loading:
             return LoadingRestaurantsState();

@@ -10,15 +10,13 @@ import 'package:resto_chain_app/features/orders/presentation/controllers/orders_
 import 'package:resto_chain_app/features/orders/presentation/widgets/order_card.dart';
 
 class OrdersScreen extends StatelessWidget {
-  OrdersScreen({super.key});
-
-  final ordersController = Get.find<OrdersController>();
+  const OrdersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
       header: _buildHeader(),
-      body: _buildBody(ordersController: ordersController),
+      body: _buildBody(),
     );
   }
 }
@@ -31,9 +29,11 @@ Widget _buildHeader() {
   );
 }
 
-Widget _buildBody({required OrdersController ordersController}) {
+Widget _buildBody() {
   return Obx(
     () {
+      final ordersController = Get.find<OrdersController>();
+
       switch (ordersController.state.value) {
         case ViewState.loading:
           return CircularProgressIndicator();

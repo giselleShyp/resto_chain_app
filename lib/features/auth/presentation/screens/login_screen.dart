@@ -11,7 +11,7 @@ import 'package:resto_chain_app/core/widgets/label_text.dart/app_label_text.dart
 import 'package:resto_chain_app/core/widgets/snack_bar/app_snackbar.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
-import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
+import 'package:resto_chain_app/features/auth/presentation/controllers/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

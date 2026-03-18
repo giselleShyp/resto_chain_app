@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
-import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
+import 'package:resto_chain_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:resto_chain_app/features/orders/data/models/order_model.dart';
 import 'package:resto_chain_app/features/orders/data/repositories/orders_repository.dart';
 

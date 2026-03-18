@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:resto_chain_app/features/auth/errors/auth_failure.dart';
+import 'package:resto_chain_app/features/auth/data/errors/auth_failure.dart';
 
 class AuthErrorMapper {
   static AuthFailure fromFirebaseException(FirebaseAuthException e) {

@@ -5,7 +5,7 @@ import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/features/profile/views/widgets/profile_items/profile_items.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
+import 'package:resto_chain_app/features/auth/presentation/controllers/auth_controller.dart';
 
 class ProfileScreen extends GetView<AuthController> {
   const ProfileScreen({super.key});

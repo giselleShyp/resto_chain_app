@@ -9,7 +9,7 @@ import 'package:resto_chain_app/core/widgets/buttons/app_button.dart';
 import 'package:resto_chain_app/core/widgets/buttons/app_text_button.dart';
 import 'package:resto_chain_app/core/widgets/dialog/show_clear_cart_dialog.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
-import 'package:resto_chain_app/features/auth/controllers/auth_controller.dart';
+import 'package:resto_chain_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:resto_chain_app/features/cart/presentation/controllers/cart_controller.dart';
 import 'package:resto_chain_app/features/cart/presentation/widgets/cart_item_card.dart';
 import 'package:resto_chain_app/features/cart/presentation/widgets/cart_empty_state.dart';

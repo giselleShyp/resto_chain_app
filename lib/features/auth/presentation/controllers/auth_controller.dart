@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:resto_chain_app/core/bindings/initial_binding.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/core/routes/routes_names.dart';
-import 'package:resto_chain_app/features/auth/errors/auth_error_mapper.dart';
-import 'package:resto_chain_app/features/auth/models/user_model.dart';
-import 'package:resto_chain_app/features/auth/services/auth_service.dart';
+import 'package:resto_chain_app/features/auth/data/errors/auth_error_mapper.dart';
+import 'package:resto_chain_app/features/auth/data/models/user_model.dart';
+import 'package:resto_chain_app/features/auth/data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController {
-  final AuthService _authService = AuthService();
+  final AuthRepository authRepository;
+
+  AuthController(this.authRepository);
 
   // var currentUser = Rxn<UserModel>();
   Rxn<UserModel> currentUser = Rxn<UserModel>();
@@ -18,7 +20,7 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    _authService.authStateChanges.listen(_handleAuthChanged);
+    authRepository.getAuthStateChanges().listen(_handleAuthChanged);
     super.onInit();
   }
 
@@ -36,7 +38,7 @@ class AuthController extends GetxController {
   Future<void> loadUser(String uid) async {
     try {
       isLoading.value = true;
-      final userModel = await _authService.getUser(uid);
+      final userModel = await authRepository.getUser(uid: uid);
       currentUser.value = userModel;
       debugPrint("Current userId : ${currentUser.value?.uid}");
     } finally {
@@ -56,7 +58,7 @@ class AuthController extends GetxController {
       debugPrint("email :$email");
       debugPrint("password :$password");
 
-      final registerUserResult = await _authService.register(
+      final registerUserResult = await authRepository.register(
         name: name,
         email: email,
         password: password,
@@ -89,7 +91,7 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true;
 
-      final loginUserResult = await _authService.login(
+      final loginUserResult = await authRepository.login(
         email: email,
         password: password,
       );
@@ -114,7 +116,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
-    await _authService.signOut();
+    await authRepository.signOut();
 
     await Get.deleteAll(force: true);
 

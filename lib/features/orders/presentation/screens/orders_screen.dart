@@ -7,6 +7,9 @@ import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/features/orders/presentation/controllers/orders_controller.dart';
+import 'package:resto_chain_app/features/orders/presentation/widgets/empty_orders_state.dart';
+import 'package:resto_chain_app/features/orders/presentation/widgets/error_orders_state.dart';
+import 'package:resto_chain_app/features/orders/presentation/widgets/loading_orders_state.dart';
 import 'package:resto_chain_app/features/orders/presentation/widgets/order_card.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -36,15 +39,19 @@ Widget _buildBody() {
 
       switch (ordersController.state.value) {
         case ViewState.loading:
-          return CircularProgressIndicator();
+          return LoadingOrdersState();
 
         case ViewState.error:
-          return AppText(
-            ordersController.errorMessage.value ?? "Something went wrong",
+          return ErrorOrdersState(
+            message:
+                ordersController.errorMessage.value ?? "Something went wrong",
+            onTap: () {
+              ordersController.refresh();
+            },
           );
 
         case ViewState.empty:
-          return AppText("No Orders Yet");
+          return EmptyOrdersState(message: "No Orders Yet");
         case ViewState.success:
           return Expanded(
             child: RefreshIndicator(

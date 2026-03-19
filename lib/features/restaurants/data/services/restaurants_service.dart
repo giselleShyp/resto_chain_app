@@ -5,36 +5,18 @@ import 'package:resto_chain_app/features/restaurants/data/models/restaurant_mode
 class RestaurantsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<List<RestaurantModel>> getRestaurants() async* {
-    try {
-      final snapshots = _firestore.collection('restaurants').snapshots();
-
-      await for (final snapshot in snapshots) {
-        final restaurants = snapshot.docs
-            .map((doc) => RestaurantModel.fromMap(doc.id, doc.data()))
-            .toList();
-
-        yield restaurants;
-      }
-    } catch (e, stackTrace) {
-      debugPrint("🔥 Firestore Error: $e");
-      debugPrint("🔥 StackTrace: $stackTrace");
-      rethrow;
-    }
+  Stream<List<RestaurantModel>> getRestaurants() {
+    return _firestore.collection('restaurants').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        try {
+          return RestaurantModel.fromMap(doc.id, doc.data());
+        } catch (e) {
+          // This catches data mapping errors (e.g., a missing field in a specific doc)
+          // without crashing the entire stream.
+          debugPrint("❌ Mapping Error for doc ${doc.id}: $e");
+          throw Exception("Data format error in restaurant list");
+        }
+      }).toList();
+    });
   }
 }
-
-//   Stream<List<RestaurantModel>> getAllRestaurants() {
-//     debugPrint("RestaurantsService :getRestaurants");
-//     return _firestore
-//         .collection('restaurants')
-//         .orderBy('createdAt', descending: true)
-//         .snapshots()
-//         .map((snapshot) {
-//       debugPrint("snapshot $snapshot");
-//       return snapshot.docs
-//           .map((doc) => RestaurantModel.fromMap(doc.id, doc.data()))
-//           .toList();
-//     });
-//   }
-// }

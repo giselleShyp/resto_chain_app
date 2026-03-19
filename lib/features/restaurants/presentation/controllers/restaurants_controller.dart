@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
+import 'package:resto_chain_app/core/errors/handle_firebstore_error.dart';
 import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
 import 'package:resto_chain_app/features/restaurants/data/repositories/restaurants_repository.dart';
 
@@ -20,30 +22,37 @@ class RestaurantsController extends GetxController {
 
   void _listenToRestaurants() {
     state.value = ViewState.loading;
+    errorMessage.value = null;
 
-    restaurantsRepository.getRestaurantsRepo().listen(
-      (data) {
-        if (data.isEmpty) {
-          state.value = ViewState.empty;
-        } else {
-          restaurants.value = data;
-          state.value = ViewState.success;
-        }
-      },
-      onError: (error) {
-        errorMessage.value = error.toString();
-        state.value = ViewState.error;
-      },
+    final stream =
+        restaurantsRepository.getRestaurantsRepo().handleError((error) {
+      // Handle Firebase/Network errors here
+      debugPrint("🔥 Stream Error: $error");
+      errorMessage.value = handleFirestoreError(error);
+      state.value = ViewState.error;
+    });
+
+    // bindStream automatically manages the subscription for you!
+    restaurants.bindStream(
+      stream.map(
+        (data) {
+          if (data.isEmpty) {
+            state.value = ViewState.empty;
+          } else {
+            state.value = ViewState.success;
+          }
+          return data;
+        },
+      ),
     );
   }
+
+  @override
+  Future<void> refresh() async {
+    state.value = ViewState.loading;
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    _listenToRestaurants();
+    super.refresh();
+  }
 }
-
-// class RestaurantController extends GetxController {
-//   final RestaurantsService _resService = RestaurantsService();
-
-//   Stream<List<RestaurantModel>> getRestaurants() {
-//     debugPrint("getRestaurants");
-//     final result = _resService.getAllRestaurants();
-//     return result;
-//   }
-// }

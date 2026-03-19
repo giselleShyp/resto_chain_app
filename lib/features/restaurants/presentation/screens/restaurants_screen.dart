@@ -85,43 +85,47 @@ Widget _buildBody() {
           case ViewState.empty:
             return EmptyRestaurantsState(message: "No restaurants available");
           case ViewState.success:
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.md,
-              ),
-              child: AnimationLimiter(
-                child: GridView.builder(
-                  // padding: const EdgeInsets.all(AppRadius.md),
-                  itemCount: controller.restaurants.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemBuilder: (context, index) {
-                    final restaurant = controller.restaurants[index];
+            return RefreshIndicator(
+              onRefresh: () => controller.refresh(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.md,
+                ),
+                child: AnimationLimiter(
+                  child: GridView.builder(
+                    // padding: const EdgeInsets.all(AppRadius.md),
+                    itemCount: controller.restaurants.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: 0.75,
+                    ),
+                    itemBuilder: (context, index) {
+                      final restaurant = controller.restaurants[index];
 
-                    return AnimatedGridView(
-                      position: index,
-                      columnCount: 2,
-                      verticalOffset: 50.0,
-                      duration: const Duration(milliseconds: 500),
-                      delay: const Duration(milliseconds: 250),
-                      child: RestaurantCard(
-                        key: ValueKey(index),
-                        logoUrl: restaurant.logoUrl,
-                        restaurantName: restaurant.name,
-                        restaurantDescription: restaurant.description,
-                        index: index,
-                        onTap: () {
-                          Get.toNamed(AppRoutes.branches,
-                              arguments: restaurant);
-                        },
-                      ),
-                    );
-                  },
+                      return AnimatedGridView(
+                        position: index,
+                        columnCount: 2,
+                        verticalOffset: 50.0,
+                        duration: const Duration(milliseconds: 500),
+                        delay: const Duration(milliseconds: 250),
+                        child: RestaurantCard(
+                          key: ValueKey(index),
+                          logoUrl: restaurant.logoUrl,
+                          restaurantName: restaurant.name,
+                          restaurantDescription: restaurant.description,
+                          index: index,
+                          onTap: () {
+                            Get.toNamed(AppRoutes.branches,
+                                arguments: restaurant);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             );

@@ -8,19 +8,18 @@ class BranchesService {
   Future<List<BranchModel>> getBranchesByRestaurant({
     required String restaurantId,
   }) async {
-    try {
-      final snapshot = await _firestore
-          .collection('branches')
-          .where('restaurantId', isEqualTo: restaurantId)
-          .get();
+    final snapshot = await _firestore
+        .collection('branches')
+        .where('restaurantId', isEqualTo: restaurantId)
+        .get();
 
-      return snapshot.docs
-          .map((doc) => BranchModel.fromFirestore(doc.id, doc.data()))
-          .toList();
-    } catch (e, stackTrace) {
-      debugPrint("🔥 Firestore Error: $e");
-      debugPrint("🔥 StackTrace: $stackTrace");
-      rethrow;
-    }
+    return snapshot.docs.map((doc) {
+      try {
+        return BranchModel.fromFirestore(doc.id, doc.data());
+      } catch (e) {
+        debugPrint("❌ Branch Mapping Error [ID: ${doc.id}]: $e");
+        throw Exception("Failed to parse branch data");
+      }
+    }).toList();
   }
 }

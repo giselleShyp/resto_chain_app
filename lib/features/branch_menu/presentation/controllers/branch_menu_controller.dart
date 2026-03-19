@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
+import 'package:resto_chain_app/core/errors/handle_firebase_error.dart';
 import 'package:resto_chain_app/features/branch_menu/data/models/menu_category.dart';
 import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/branch_menu/data/repositories/branch_menu_repository.dart';
@@ -36,13 +37,12 @@ class BranchMenuController extends GetxController {
   }
 
   Future<void> loadCategories() async {
-    categoriesState.value = ViewState.loading;
-
     try {
+      categoriesState.value = ViewState.loading;
+      errorMessage.value = null;
+
       final result =
           await branchesMenuRepository.getCategories(branchId: branchId);
-
-      categories.value = result;
 
       if (result.isEmpty) {
         categoriesState.value = ViewState.empty;
@@ -50,11 +50,13 @@ class BranchMenuController extends GetxController {
         return;
       }
 
+      categories.assignAll(result);
       categoriesState.value = ViewState.success;
 
+      // Automatically select the first category
       await selectCategory(result.first.id);
     } catch (e) {
-      errorMessage.value = e.toString();
+      errorMessage.value = handleFirebaseError(e);
       categoriesState.value = ViewState.error;
     }
   }
@@ -64,25 +66,26 @@ class BranchMenuController extends GetxController {
 
     // ✅ if cached → no request
     if (_itemsCache.containsKey(categoryId)) {
-      items.value = _itemsCache[categoryId]!;
+      items.assignAll(_itemsCache[categoryId]!);
       itemsState.value = items.isEmpty ? ViewState.empty : ViewState.success;
       return;
     }
 
-    itemsState.value = ViewState.loading;
-
+    // 2. Fetch from Remote
     try {
+      itemsState.value = ViewState.loading;
+
       final result = await branchesMenuRepository.getItemsByCategory(
         branchId: branchId,
         categoryId: categoryId,
       );
 
       _itemsCache[categoryId] = result;
-      items.value = result;
+      items.assignAll(result);
 
       itemsState.value = result.isEmpty ? ViewState.empty : ViewState.success;
     } catch (e) {
-      errorMessage.value = e.toString();
+      errorMessage.value = handleFirebaseError(e);
       itemsState.value = ViewState.error;
     }
   }
@@ -96,10 +99,4 @@ class BranchMenuController extends GetxController {
 
     await selectCategory(categoryId);
   }
-
-  // Future<void> refreshData() async {
-  //   if (selectedCategoryId.value != null) {
-  //     await loadItems(selectedCategoryId.value!);
-  //   }
-  // }
 }

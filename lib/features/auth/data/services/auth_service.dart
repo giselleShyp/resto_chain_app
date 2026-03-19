@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:resto_chain_app/features/auth/data/models/user_model.dart';
 
 class AuthService {
@@ -28,13 +27,7 @@ class AuthService {
       createdAt: DateTime.now(),
     );
 
-    try {
-      await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
-      debugPrint("✅ User document created in Firestore");
-    } catch (e, st) {
-      debugPrint("❌ Failed to create user document: $e");
-      debugPrint("$st");
-    }
+    await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
 
     return userModel;
   }
@@ -56,6 +49,12 @@ class AuthService {
   Future<UserModel> getUser(String uid) async {
     final doc = await _firestore.collection('users').doc(uid).get();
 
+    if (!doc.exists) {
+      throw FirebaseException(
+          plugin: 'firestore',
+          code: 'not-found',
+          message: 'User data not found');
+    }
     return UserModel.fromMap(doc.data()!);
   }
 

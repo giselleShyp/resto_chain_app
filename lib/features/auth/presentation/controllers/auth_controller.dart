@@ -41,6 +41,10 @@ class AuthController extends GetxController {
       final userModel = await authRepository.getUser(uid: uid);
       currentUser.value = userModel;
       debugPrint("Current userId : ${currentUser.value?.uid}");
+    } catch (e) {
+      // Handle background fetch error (e.g., user exists in Auth but deleted in Firestore)
+      debugPrint("❌ Error loading user: $e");
+      currentUser.value = null;
     } finally {
       isLoading.value = false;
     }
@@ -102,14 +106,15 @@ class AuthController extends GetxController {
         data: loginUserResult,
       );
     } on FirebaseAuthException catch (e) {
-      final failure = AuthErrorMapper.fromFirebaseException(e);
+      // Specifically handles Firebase Auth errors (wrong password, etc.)
       return ResultModel.failure(
-        message: failure.message,
-      );
-    } catch (_) {
-      return ResultModel.failure(
-        message: 'Unexpected error occurred.',
-      );
+          message: AuthErrorMapper.fromFirebaseException(e).message);
+    } on FirebaseException catch (e) {
+      // Handles Firestore specific errors
+      return ResultModel.failure(message: "Database error: ${e.message}");
+    } catch (e) {
+      // Handles everything else (null pointers, mapping errors, etc.)
+      return ResultModel.failure(message: 'An unexpected error occurred: $e');
     } finally {
       isLoading.value = false;
     }

@@ -11,6 +11,7 @@ import 'package:resto_chain_app/core/styles/spaces/app_spacing.dart';
 import 'package:resto_chain_app/core/styles/theme/app_colors.dart';
 import 'package:resto_chain_app/core/widgets/animated_grid_view/animated_grid_view.dart';
 import 'package:resto_chain_app/core/widgets/restaurant_card/restaurant_card.dart';
+import 'package:resto_chain_app/core/widgets/scrollable_state/app_scrollable_state.dart';
 import 'package:resto_chain_app/core/widgets/text/app_text.dart';
 import 'package:resto_chain_app/core/widgets/textfield/app_text_form_field.dart';
 import 'package:resto_chain_app/features/restaurants/presentation/controllers/restaurants_controller.dart';
@@ -68,26 +69,31 @@ Widget _buildHeader() {
 }
 
 Widget _buildBody() {
+  final controller = Get.find<RestaurantsController>();
+
   return Expanded(
-    child: Obx(
-      () {
-        final controller = Get.find<RestaurantsController>();
+    child: RefreshIndicator(
+      onRefresh: () => controller.refresh(),
+      child: Obx(
+        () {
+          switch (controller.state.value) {
+            case ViewState.loading:
+              return AppScrollableState(child: LoadingRestaurantsState());
 
-        switch (controller.state.value) {
-          case ViewState.loading:
-            return LoadingRestaurantsState();
+            case ViewState.error:
+              return AppScrollableState(
+                child: ErrorRestaurantsState(
+                  message:
+                      controller.errorMessage.value ?? "Something went wrong",
+                ),
+              );
 
-          case ViewState.error:
-            return ErrorRestaurantsState(
-              message: controller.errorMessage.value ?? "Something went wrong",
-            );
-
-          case ViewState.empty:
-            return EmptyRestaurantsState(message: "No restaurants available");
-          case ViewState.success:
-            return RefreshIndicator(
-              onRefresh: () => controller.refresh(),
-              child: Padding(
+            case ViewState.empty:
+              return AppScrollableState(
+                  child: EmptyRestaurantsState(
+                      message: "No restaurants available"));
+            case ViewState.success:
+              return Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
                   vertical: AppSpacing.md,
@@ -127,10 +133,10 @@ Widget _buildBody() {
                     },
                   ),
                 ),
-              ),
-            );
-        }
-      },
+              );
+          }
+        },
+      ),
     ),
   );
 }

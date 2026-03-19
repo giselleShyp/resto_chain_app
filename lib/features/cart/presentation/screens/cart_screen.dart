@@ -42,10 +42,7 @@ class CartScreen extends StatelessWidget {
           if (controller.cartItems.isEmpty) {
             return const CartEmptyState();
           }
-          return _buildCartScreenBody(
-            controller,
-            userId,
-          );
+          return _buildCartScreenBody(controller, userId);
         },
       ),
     );

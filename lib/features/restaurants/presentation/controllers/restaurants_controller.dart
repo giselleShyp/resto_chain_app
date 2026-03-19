@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
-import 'package:resto_chain_app/core/errors/handle_firebstore_error.dart';
+import 'package:resto_chain_app/core/errors/handle_firebase_error.dart';
 import 'package:resto_chain_app/features/restaurants/data/models/restaurant_model.dart';
 import 'package:resto_chain_app/features/restaurants/data/repositories/restaurants_repository.dart';
 
@@ -28,7 +28,7 @@ class RestaurantsController extends GetxController {
         restaurantsRepository.getRestaurantsRepo().handleError((error) {
       // Handle Firebase/Network errors here
       debugPrint("🔥 Stream Error: $error");
-      errorMessage.value = handleFirestoreError(error);
+      errorMessage.value = handleFirebaseError(error);
       state.value = ViewState.error;
     });
 

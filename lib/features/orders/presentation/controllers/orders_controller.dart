@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:resto_chain_app/core/enums/view_state.dart';
+import 'package:resto_chain_app/core/errors/handle_firebase_error.dart';
 import 'package:resto_chain_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:resto_chain_app/features/orders/data/models/order_model.dart';
 import 'package:resto_chain_app/features/orders/data/repositories/orders_repository.dart';
@@ -32,8 +33,8 @@ class OrdersController extends GetxController {
 
     final stream = ordersRepository.getOrders(uid).handleError((error) {
       // Handle Firebase/Network errors here
-      errorMessage.value = error.toString();
       state.value = ViewState.error;
+      errorMessage.value = handleFirebaseError(error);
     });
 
     // bindStream automatically manages the subscription for you!

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:resto_chain_app/core/errors/handle_firebase_error.dart';
 import 'package:resto_chain_app/core/models/result_model.dart';
 import 'package:resto_chain_app/features/branch_menu/data/models/menu_item_model.dart';
 import 'package:resto_chain_app/features/cart/data/models/cart_item_model.dart';
@@ -98,7 +99,13 @@ class CartController extends GetxController {
   }
 
   Future<ResultModel> checkout({required String userId}) async {
-    if (cartItems.isEmpty) ResultModel.failure(message: "Cart Empty");
+    if (cartItems.isEmpty) {
+      return ResultModel.failure(message: "Your cart is empty");
+    }
+
+    if (userId.isEmpty) {
+      return ResultModel.failure(message: "Please login to place an order");
+    }
 
     debugPrint("userId :$userId");
 
@@ -121,18 +128,26 @@ class CartController extends GetxController {
     );
     try {
       isLoading.value = true;
+
+      // 2. Remote Operation
       await cartRepository.addOrder(order);
 
+      // 3. Success Logic
       clearAll();
 
-      isLoading.value = false;
+      // isLoading.value = false;
 
       return ResultModel.success(
-        message: "Order Recorded",
+        message: "Order placed successfully!",
       );
     } catch (e) {
+      // 4. Error Logic using your Global Helper
+      final errorMsg = handleFirebaseError(e);
+      debugPrint("❌ Checkout Failed: $e");
+      return ResultModel.failure(message: errorMsg);
+    } finally {
+      // 5. Always stop loading regardless of success/failure
       isLoading.value = false;
-      return ResultModel.failure(message: e.toString());
     }
   }
 }

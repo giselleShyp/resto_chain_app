@@ -8,9 +8,8 @@ class CartService {
   Future<void> setOrder(OrderModel order) async {
     try {
       await _firestore.collection("orders").doc(order.id).set(order.toMap());
-    } catch (e, stackTrace) {
-      debugPrint("🔥 Firestore Error: $e");
-      debugPrint("🔥 StackTrace: $stackTrace");
+    } catch (e) {
+      debugPrint("🔥 CartService Error: $e");
       rethrow;
     }
   }

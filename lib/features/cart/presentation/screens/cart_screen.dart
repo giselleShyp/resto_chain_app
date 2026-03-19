@@ -160,12 +160,12 @@ Widget _buildTotalPriceAndCheckoutButton({
                 : AppButton(
                     variation: ButtonVariation.primary,
                     label: "Checkout",
-                    onPressed: () {
+                    onPressed: () async {
                       if (userId.isEmpty) {
                         debugPrint("Can't Checkout because userId is null");
                         return;
                       }
-                      controller.checkout(userId: userId);
+                      await controller.checkout(userId: userId);
                     },
                   ),
           ),

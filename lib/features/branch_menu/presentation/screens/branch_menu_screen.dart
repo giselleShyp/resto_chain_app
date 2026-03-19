@@ -21,7 +21,6 @@ class BranchMenuScreen extends GetView<BranchMenuController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(251, 250, 249, 1),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [

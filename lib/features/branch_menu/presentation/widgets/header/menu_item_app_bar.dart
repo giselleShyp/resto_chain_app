@@ -21,8 +21,14 @@ class MenuItemAppBar extends StatelessWidget {
     final cart = Get.find<CartController>();
 
     return SliverAppBar(
-      backgroundColor: Colors.white,
       elevation: 0,
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: Border(
+        bottom: BorderSide(
+          color: Colors.grey.withValues(alpha: 0.2),
+        ),
+      ),
       pinned: true,
       title: AppText(
         title,
